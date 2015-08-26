@@ -39,7 +39,7 @@ class Activate {
 			self::err( __( 'This plugin requires the 64-bit version of PHP to function correctly.', 'my-wp-backup' ) );
 		}
 
-		$extensions = array( 'zlib', 'bz2', 'Phar', 'SPL', 'curl', 'mbstring' );
+		$extensions = array( 'zlib', 'bz2', 'SPL', 'curl', 'mbstring' );
 
 		foreach ( $extensions as $extension ) {
 			if ( ! extension_loaded( $extension ) ) {
