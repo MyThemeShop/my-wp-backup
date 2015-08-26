@@ -3,8 +3,6 @@
     $.fn.navTab = function() {
         var wrap = $(this);
 
-        console.log('haha!');
-
         $('.nav-tab').click(function(e) {
             e.preventDefault();
 
