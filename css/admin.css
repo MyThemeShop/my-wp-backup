@@ -1,0 +1,13 @@
+/*
+* My WP Backup By MyThemeShop
+*/
+#my-wp-backup .postbox .hndle { padding: 8px 12px; margin: 0; }
+#my-wp-backup .nav-tab-content, .schedule-option, .exclude-filters, #my-wp-backup .select-section { display: none }
+#my-wp-backup .nav-tab-content.nav-tab-content-active, input[name="my-wp-backup-jobs[cron_type]"]:checked + label + .schedule-option, .enable-exclude:checked + label + .exclude-filters, #my-wp-backup .select-section.section-active { display: block }
+.terminal, .terminal code { font-family: Consolas, Monaco, 'Andale Mono', monospace; overflow: auto; word-spacing: normal; word-break: normal; direction: ltr; text-align: left; tab-size: 4; }
+.terminal { background: #333; border: 20px solid #333; color: #aaa; max-height: 30em; }
+.terminal code { background: none; padding: 0; }
+.terminal .debug { display: none }
+.terminal .show-verbose .debug { display: inline }
+#my-wp-backup.page-about h1 { margin: 0.2em 200px 0 0; color: #32373c; line-height: 1.2em; font-size: 2.8em; font-weight: 400; }
+.button.button-cancel { box-shadow: none; border: none; background: none; color: #0073aa; text-decoration: underline; }

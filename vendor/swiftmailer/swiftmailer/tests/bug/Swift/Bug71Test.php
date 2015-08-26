@@ -1,0 +1,20 @@
+<?php
+
+class Swift_Bug71Test extends \PHPUnit_Framework_TestCase
+{
+    private $message;
+
+    public function setUp()
+    {
+        $this->message = new Swift_Message('test');
+    }
+
+    public function testCallingToStringAfterSettingNewBodyReflectsChanges()
+    {
+        $this->message->setBody('BODY1');
+        $this->assertRegExp('/BODY1/', $this->message->toString());
+
+        $this->message->setBody('BODY2');
+        $this->assertRegExp('/BODY2/', $this->message->toString());
+    }
+}

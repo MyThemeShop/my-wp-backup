@@ -1,0 +1,1171 @@
+# Copyright (C) 2015 WP Backup
+# This file is distributed under the same license as the WP Backup package.
+msgid ""
+msgstr ""
+"Project-Id-Version: My WP Backup 1.0.0\n"
+"Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/my-wp-backup\n"
+"POT-Creation-Date: 2015-08-23 03:15+0530\n"
+"PO-Revision-Date: 2015-08-23 03:15+0530\n"
+"Last-Translator: MyThemeShop <support-team@mythemeshop.com>\n"
+"Language-Team: MyThemeShop <support-team@mythemeshop.com>\n"
+"Language: en\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.6.2\n"
+"X-Poedit-KeywordsList: __;_e;__ngettext:1,2;_n:1,2;__ngettext_noop:1,2;"
+"_n_noop:1,2;_c;_nc:4c,1,2;_x:1,2c;_nx:4c,1,2;_nx_noop:4c,1,2;_ex:1,2c;"
+"esc_attr__;esc_attr_e;esc_attr_x:1,2c;esc_html__;esc_html_e;esc_html_x:1,2c\n"
+"X-Poedit-Basepath: ..\n"
+"X-Poedit-SearchPathExcluded-0: vendor\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: my-wp-backup.php:104
+msgid "Once Weekly"
+msgstr ""
+
+#: my-wp-backup.php:108
+msgid "Once Fortnightly"
+msgstr ""
+
+#: my-wp-backup.php:112
+msgid "Once Monthly"
+msgstr ""
+
+#: src/Archive.php:94
+msgid "Creating archive"
+msgstr ""
+
+#: src/Archive.php:105
+#, php-format
+msgid "Compressing archive with %s"
+msgstr ""
+
+#: src/Archive.php:130
+#, php-format
+msgid "Skipping \"%s\", not in root dir"
+msgstr ""
+
+#: src/Archive.php:134
+#, php-format
+msgid "Adding file: %s...."
+msgstr ""
+
+#: src/Archive.php:136 src/Archive.php:140 src/Archive.php:154
+#: src/Archive.php:159 src/Archive.php:164 src/Archive.php:193
+#: src/Archive.php:248 src/Archive.php:256 src/Archive.php:281
+#: src/Archive.php:307 src/Job.php:289 src/Job.php:324 src/Job.php:427
+#: src/Job.php:700 src/Job.php:803 src/Job.php:837 src/Job.php:878
+#: src/Admin/Backup.php:399
+msgid "Ok."
+msgstr ""
+
+#: src/Archive.php:138
+#, php-format
+msgid "Calculating checksum: %s...."
+msgstr ""
+
+#: src/Archive.php:145
+#, php-format
+msgid "Exclude file: %s (filtered)"
+msgstr ""
+
+#: src/Archive.php:149
+#, php-format
+msgid "Exclude file: %s (unchanged)"
+msgstr ""
+
+#: src/Archive.php:152
+msgid "Adding checksum file..."
+msgstr ""
+
+#: src/Archive.php:157
+msgid "Adding database export file..."
+msgstr ""
+
+#: src/Archive.php:162
+msgid "Closing archive..."
+msgstr ""
+
+#: src/Archive.php:169
+msgid "Splitting archive"
+msgstr ""
+
+#: src/Archive.php:175
+msgid "Unable to split archive."
+msgstr ""
+
+#: src/Archive.php:183
+#, php-format
+msgid "Creating volume %s..."
+msgstr ""
+
+#: src/Archive.php:186
+#, php-format
+msgid "Unable to create volume %s."
+msgstr ""
+
+#: src/Archive.php:194
+#, php-format
+msgid "Created volume %s"
+msgstr ""
+
+#: src/Archive.php:201
+#, php-format
+msgid "Archive location: %s"
+msgstr ""
+
+#: src/Archive.php:203
+msgid "Done create archive"
+msgstr ""
+
+#: src/Archive.php:220
+msgid "Preparing backup for restore..."
+msgstr ""
+
+#: src/Archive.php:224
+#, php-format
+msgid "Joining %d-part archives."
+msgstr ""
+
+#: src/Archive.php:230
+msgid "Unable to read backup file."
+msgstr ""
+
+#: src/Archive.php:234
+#, php-format
+msgid "Processing volume %d."
+msgstr ""
+
+#: src/Archive.php:239
+msgid "Unable to read archive volume."
+msgstr ""
+
+#: src/Archive.php:263
+#, php-format
+msgid "Extracting %s"
+msgstr ""
+
+#: src/Archive.php:272
+#, php-format
+msgid "Decompressing archive compressed with %s"
+msgstr ""
+
+#: src/Archive.php:289
+msgid "Getting checksum file from archive..."
+msgstr ""
+
+#: src/Job.php:235
+msgid "Retrying upload."
+msgstr ""
+
+#: src/Job.php:242
+#, php-format
+msgid "Failed to upload to %s: %s"
+msgstr ""
+
+#: src/Job.php:247 src/Job.php:447
+#, php-format
+msgid "Missing upload function: %s"
+msgstr ""
+
+#: src/Job.php:255
+msgid "Uploading backup via ftp"
+msgstr ""
+
+#: src/Job.php:281
+#, php-format
+msgid "Uploading %s via ftp..."
+msgstr ""
+
+#: src/Job.php:292
+msgid "Done ftp upload"
+msgstr ""
+
+#: src/Job.php:298
+msgid "Uploading backup via dropbox"
+msgstr ""
+
+#: src/Job.php:317
+#, php-format
+msgid "Uploading %s via dropbox..."
+msgstr ""
+
+#: src/Job.php:327
+msgid "Done dropbox upload"
+msgstr ""
+
+#: src/Job.php:333
+msgid "Uploading backup via google drive"
+msgstr ""
+
+#: src/Job.php:387
+#, php-format
+msgid "Uploading \"%s\" via google drive..."
+msgstr ""
+
+#: src/Job.php:431
+msgid "Done google drive upload."
+msgstr ""
+
+#: src/Job.php:456
+msgid "Reporting via e-mail"
+msgstr ""
+
+#: src/Job.php:460
+msgid "Sending email via default method"
+msgstr ""
+
+#: src/Job.php:480
+msgid "Sending email via SMTP"
+msgstr ""
+
+#: src/Job.php:518
+#, php-format
+msgid "Unknown e-mail sending method: %s"
+msgstr ""
+
+#: src/Job.php:522
+msgid "Done e-mail report"
+msgstr ""
+
+#: src/Job.php:627
+msgid "Comparing files..."
+msgstr ""
+
+#: src/Job.php:760
+#, php-format
+msgid "Unable to restore backup from %s"
+msgstr ""
+
+#: src/Job.php:771
+msgid "Downloading backup via ftp"
+msgstr ""
+
+#: src/Job.php:790
+#, php-format
+msgid "Downloading %s via ftp..."
+msgstr ""
+
+#: src/Job.php:795 src/Job.php:829 src/Job.php:863
+#, php-format
+msgid "Local path: %s"
+msgstr ""
+
+#: src/Job.php:806
+msgid "Done ftp download"
+msgstr ""
+
+#: src/Job.php:812
+msgid "Downloading backup via dropbox"
+msgstr ""
+
+#: src/Job.php:824
+#, php-format
+msgid "Downloading %s via dropbox..."
+msgstr ""
+
+#: src/Job.php:840
+msgid "Done dropbox download"
+msgstr ""
+
+#: src/Job.php:846
+msgid "Downloading backup via google drive"
+msgstr ""
+
+#: src/Job.php:858
+#, php-format
+msgid "Downloading %s (%s) via google drive..."
+msgstr ""
+
+#: src/Job.php:881
+msgid "Done google drive download"
+msgstr ""
+
+#: src/Admin/Admin.php:27
+msgid "Dashboard"
+msgstr ""
+
+#: src/Admin/Admin.php:28 views/backups.php:7
+msgid "Backups"
+msgstr ""
+
+#: src/Admin/Admin.php:29 views/jobs.php:8
+msgid "Jobs"
+msgstr ""
+
+#: src/Admin/Admin.php:30 src/Admin/Admin.php:210
+msgid "Settings"
+msgstr ""
+
+#: src/Admin/Admin.php:92
+msgid "Job created"
+msgstr ""
+
+#: src/Admin/Admin.php:93
+msgid ""
+"Great! You can hover on the job to edit/delete or run it. Click \"Run Now\" "
+"to make your first backup."
+msgstr ""
+
+#: src/Admin/Admin.php:106
+msgid "Getting started"
+msgstr ""
+
+#: src/Admin/Admin.php:107
+msgid ""
+"A job is used to configure how/when a backup is created. Create one now!"
+msgstr ""
+
+#: src/Admin/Admin.php:124 src/Admin/Job.php:272 views/jobs.php:56
+msgid "General"
+msgstr ""
+
+#: src/Admin/Admin.php:125
+msgid "Configure the name of the job, archive options"
+msgstr ""
+
+#: src/Admin/Admin.php:130 src/Admin/Job.php:287 views/jobs.php:57
+msgid "Content"
+msgstr ""
+
+#: src/Admin/Admin.php:131
+msgid "Exclude certain files/folders or database tables"
+msgstr ""
+
+#: src/Admin/Admin.php:136 views/jobs.php:58
+msgid "Schedule"
+msgstr ""
+
+#: src/Admin/Admin.php:137
+msgid "Run Job manually(Interval/CRON pattern is available in Pro Version)"
+msgstr ""
+
+#: src/Admin/Admin.php:142 src/Admin/Table/Backup.php:73
+#: src/Admin/Table/Job.php:86 views/jobs.php:59
+msgid "Destination"
+msgstr ""
+
+#: src/Admin/Admin.php:143
+msgid "Choose which cloud services would you like the backups to be uploaded"
+msgstr ""
+
+#: src/Admin/Admin.php:148 views/jobs.php:60
+msgid "Report"
+msgstr ""
+
+#: src/Admin/Admin.php:149
+msgid "How would you like to be notified when the backup get's finished?"
+msgstr ""
+
+#: src/Admin/Admin.php:154
+msgid "Save"
+msgstr ""
+
+#: src/Admin/Admin.php:155
+msgid "Click here once you are done configuring the job."
+msgstr ""
+
+#: src/Admin/Admin.php:168
+msgid "Yey!"
+msgstr ""
+
+#: src/Admin/Admin.php:169
+msgid ""
+"Your backup job is now running. A live progress of the job is shown below."
+msgstr ""
+
+#: src/Admin/Admin.php:174
+msgid "Verbose"
+msgstr ""
+
+#: src/Admin/Admin.php:175
+msgid "Click here to show more verbose information about the job's progress."
+msgstr ""
+
+#: src/Admin/Admin.php:180
+msgid "Pro Tip"
+msgstr ""
+
+#: src/Admin/Admin.php:181
+msgid ""
+"The job is running on background which allows you to close this tab or go to "
+"another page!"
+msgstr ""
+
+#: src/Admin/Admin.php:187
+msgid "Once the job is finished you can click \"Backups\" to view the backups."
+msgstr ""
+
+#: src/Admin/Admin.php:229 src/Admin/Job.php:309
+msgid "For more information:"
+msgstr ""
+
+#: src/Admin/Admin.php:230 src/Admin/Job.php:310
+msgid "Plugin Homepage"
+msgstr ""
+
+#: src/Admin/Admin.php:231 src/Admin/Job.php:311
+msgid "Support Forums"
+msgstr ""
+
+#: src/Admin/Admin.php:241 src/Admin/Admin.php:268 src/Admin/Backup.php:57
+#: src/Admin/Backup.php:81 src/Admin/Job.php:147 src/Admin/Job.php:183
+#: src/Admin/Job.php:191 src/Admin/Job.php:214 src/Admin/Job.php:222
+#: src/Admin/Job.php:372 src/Admin/Job.php:550 src/Admin/Job.php:743
+msgid "Nope! Security check failed!"
+msgstr ""
+
+#: src/Admin/Admin.php:255
+msgid "Failed to update settings."
+msgstr ""
+
+#: src/Admin/Admin.php:257
+msgid "Settings updated."
+msgstr ""
+
+#: src/Admin/Admin.php:281
+msgid "Options imported."
+msgstr ""
+
+#: src/Admin/Admin.php:283
+msgid "Unable to import options."
+msgstr ""
+
+#: src/Admin/Admin.php:342
+msgid "My WP Backup Options"
+msgstr ""
+
+#: src/Admin/Admin.php:342
+msgid "My WP Backup"
+msgstr ""
+
+#: src/Admin/Backup.php:67
+msgid "Backup deleted."
+msgid_plural "Backups deleted."
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Admin/Backup.php:91
+msgid "Invalid backup id/uniqid."
+msgstr ""
+
+#: src/Admin/Backup.php:99
+msgid "Backup files missing."
+msgstr ""
+
+#: src/Admin/Backup.php:105
+#, php-format
+msgid "No backup files from %s."
+msgstr ""
+
+#: src/Admin/Backup.php:152
+msgid "Log file missing.."
+msgstr ""
+
+#: src/Admin/Backup.php:172 src/Admin/Backup.php:192
+msgid "Backup does not exist."
+msgstr ""
+
+#: src/Admin/Backup.php:182 src/Admin/Job.php:264 src/Admin/Job.php:330
+msgid "Something went wrong."
+msgstr ""
+
+#: src/Admin/Backup.php:360
+msgid "Restoring..."
+msgstr ""
+
+#: src/Admin/Backup.php:363
+msgid "No local copy of the backup is available."
+msgstr ""
+
+#: src/Admin/Backup.php:381
+#, php-format
+msgid "Overwrite file: %s"
+msgstr ""
+
+#: src/Admin/Backup.php:383
+#, php-format
+msgid "Unchanged file: %s"
+msgstr ""
+
+#: src/Admin/Backup.php:385
+#, php-format
+msgid "Extract file: %s"
+msgstr ""
+
+#: src/Admin/Backup.php:395
+msgid "Importing database file..."
+msgstr ""
+
+#: src/Admin/Backup.php:402
+msgid "Done restoring."
+msgstr ""
+
+#: src/Admin/Backup.php:403
+#, php-format
+msgid "Finished restoring backup in %.1f seconds."
+msgstr ""
+
+#: src/Admin/Job.php:78
+msgid "Hi, your site backup is complete!"
+msgstr ""
+
+#: src/Admin/Job.php:79
+msgid "Job {{name}} finished in {{duration}}"
+msgstr ""
+
+#: src/Admin/Job.php:99
+msgid "FTP"
+msgstr ""
+
+#: src/Admin/Job.php:101
+msgid "Dropbox"
+msgstr ""
+
+#: src/Admin/Job.php:102
+msgid "Google Drive"
+msgstr ""
+
+#: src/Admin/Job.php:106 views/jobs.php:363
+msgid "None"
+msgstr ""
+
+#: src/Admin/Job.php:107
+msgid "E-Mail"
+msgstr ""
+
+#: src/Admin/Job.php:111
+msgid "Default"
+msgstr ""
+
+#: src/Admin/Job.php:112
+msgid "SMTP"
+msgstr ""
+
+#: src/Admin/Job.php:166
+msgid ""
+"Failed to schedule job (invalid cron pattern?). Changed job scheduling to "
+"\"manual\"."
+msgstr ""
+
+#: src/Admin/Job.php:169
+#, php-format
+msgid "%s scheduled to run in %s."
+msgstr ""
+
+#: src/Admin/Job.php:173
+#, php-format
+msgid "Job \"%s\" %s."
+msgstr ""
+
+#: src/Admin/Job.php:200
+msgid "Job deleted."
+msgid_plural "Jobs deleted"
+msgstr[0] ""
+msgstr[1] ""
+
+#: src/Admin/Job.php:227
+#, php-format
+msgid "Job \"%s\" is currently running."
+msgstr ""
+
+#: src/Admin/Job.php:242
+#, php-format
+msgid "Cannot manually run job of schedule type \"%s\"."
+msgstr ""
+
+#: src/Admin/Job.php:263
+msgid "There is unsaved form data."
+msgstr ""
+
+#: src/Admin/Job.php:265
+msgid "Test Complete."
+msgstr ""
+
+#: src/Admin/Job.php:299
+msgid "Selection"
+msgstr ""
+
+#: src/Admin/Job.php:427
+msgid "A job is already running"
+msgstr ""
+
+#: src/Admin/Job.php:448
+msgid "Performing full backup"
+msgstr ""
+
+#: src/Admin/Job.php:485
+#, php-format
+msgid "Finished running job in %.1f seconds."
+msgstr ""
+
+#: src/Admin/Job.php:502
+#, php-format
+msgid "Rescheduling job to run at %s"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:70
+msgid "Created"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:71
+msgid "Size"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:72
+msgid "Type"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:74
+msgid "Job Duration"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:75 views/jobs.php:86
+msgid "Job Name"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:109 src/Admin/Table/Job.php:124
+msgid "Delete"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:165
+msgid "Full Backup"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:165
+msgid "Differential Backup"
+msgstr ""
+
+#: src/Admin/Table/Backup.php:209
+msgid "No Backups created."
+msgstr ""
+
+#: src/Admin/Table/Job.php:30
+msgid "No Jobs configured."
+msgstr ""
+
+#: src/Admin/Table/Job.php:83
+msgid "ID"
+msgstr ""
+
+#: src/Admin/Table/Job.php:84
+msgid "Name"
+msgstr ""
+
+#: src/Admin/Table/Job.php:85
+msgid "Status"
+msgstr ""
+
+#: src/Admin/Table/Job.php:87
+msgid "Reporters"
+msgstr ""
+
+#: src/Admin/Table/Job.php:88
+msgid "Split Size"
+msgstr ""
+
+#: src/Admin/Table/Job.php:89
+msgid "Last Run"
+msgstr ""
+
+#: src/Admin/Table/Job.php:90
+msgid "Next Run"
+msgstr ""
+
+#: src/Admin/Table/Job.php:207
+msgid "Running"
+msgstr ""
+
+#: src/Admin/Table/Job.php:210
+msgid "Idle"
+msgstr ""
+
+#: src/Cli/Backup.php:30 src/Cli/Backup.php:64
+msgid "No such backup exists."
+msgstr ""
+
+#: src/Cli/Backup.php:36
+#, php-format
+msgid "Only the following restore methods are available: %s"
+msgstr ""
+
+#: src/Cli/Backup.php:70
+#, php-format
+msgid "Deleted backup with unique id %s."
+msgstr ""
+
+#: src/Cli/Job.php:58
+#, php-format
+msgid "No such job with ID %s."
+msgstr ""
+
+#: src/Cli/Job.php:64
+#, php-format
+msgid "Deleted job %s."
+msgstr ""
+
+#: src/Database/ExportFile.php:28
+msgid "Skipping database export"
+msgstr ""
+
+#: src/Database/ExportFile.php:34
+msgid "Exporting database"
+msgstr ""
+
+#: src/Database/ExportFile.php:36
+#, php-format
+msgid "Dumping database to temporary file %s"
+msgstr ""
+
+#: src/Database/ExportFile.php:39
+#, php-format
+msgid "Excluded tables \"%s\""
+msgstr ""
+
+#: src/Database/ExportFile.php:41
+msgid "No tables excluded, exporting all"
+msgstr ""
+
+#: src/Database/ExportFile.php:54
+msgid "Done database export"
+msgstr ""
+
+#: src/Database/ExportFile.php:61
+msgid "Skipping database import"
+msgstr ""
+
+#: src/Database/ExportFile.php:79
+#, php-format
+msgid "Failed to execute query: %s"
+msgstr ""
+
+#: src/Database/ExportFile.php:90
+msgid "Database not exported, nothing to delete"
+msgstr ""
+
+#: src/Database/ExportFile.php:95
+#, php-format
+msgid "Deleting temporary file at %s"
+msgstr ""
+
+#: src/Database/Dumper/Dumper.php:53
+msgid "Using mysqldump."
+msgstr ""
+
+#: src/Database/Dumper/Dumper.php:56
+msgid "Using native dumper."
+msgstr ""
+
+#: src/Database/Dumper/Shell.php:30
+#, php-format
+msgid "Couldn't export database: %s"
+msgstr ""
+
+#: src/Install/Activate.php:36
+#, php-format
+msgid "This plugin requires the %s PHP extension to function correctly."
+msgstr ""
+
+#: views/backups.php:7
+msgid "Run a backup job"
+msgstr ""
+
+#: views/backups.php:19 views/backups.php:90 views/jobs.php:31
+msgid "Verbose Output"
+msgstr ""
+
+#: views/backups.php:35
+msgid "Log file missing."
+msgstr ""
+
+#: views/backups.php:48
+msgid ""
+"Unable to list files, hashes.txt missing/modified from backup directory."
+msgstr ""
+
+#: views/backups.php:59
+msgid "You are about to delete a backup created on:"
+msgstr ""
+
+#: views/backups.php:63 views/jobs.php:45
+msgid "Are you sure you want to do this?"
+msgstr ""
+
+#: views/backups.php:65
+msgid "No, Return me to backup list"
+msgstr ""
+
+#: views/backups.php:76
+msgid "You are about to delete a restore to a backup created on:"
+msgstr ""
+
+#: views/backups.php:80
+msgid "Select where to restore the backup from:"
+msgstr ""
+
+#: views/backups.php:85 views/jobs.php:21
+msgid "Cancel"
+msgstr ""
+
+#: views/backups.php:91
+msgid "Please Wait..."
+msgstr ""
+
+#: views/dashboard.php:2
+#, php-format
+msgid "Welcome to My WP Backup %s"
+msgstr ""
+
+#: views/dashboard.php:5
+msgid "Perform a backup"
+msgstr ""
+
+#: views/dashboard.php:6
+msgid "Restore from a backup"
+msgstr ""
+
+#: views/dashboard.php:9
+msgid "Last backup was created"
+msgstr ""
+
+#: views/dashboard.php:9
+#, php-format
+msgid "%s ago."
+msgstr ""
+
+#: views/dashboard.php:11
+msgid "No backup yet. Create one now!"
+msgstr ""
+
+#: views/dashboard.php:19
+msgid "Getting Started"
+msgstr ""
+
+#: views/dashboard.php:21
+msgid "New to WP Backup?"
+msgstr ""
+
+#: views/dashboard.php:21
+msgid "Take Tour"
+msgstr ""
+
+#: views/jobs.php:8
+msgid "Add New"
+msgstr ""
+
+#: views/jobs.php:19
+#, php-format
+msgid "You are about to run a job named %s."
+msgstr ""
+
+#: views/jobs.php:32 views/jobs.php:425
+msgid "Please wait..."
+msgstr ""
+
+#: views/jobs.php:41
+msgid "You are about to delete the job:"
+msgstr ""
+
+#: views/jobs.php:47
+msgid "No, Return me to job list"
+msgstr ""
+
+#: views/jobs.php:90
+msgid "e.g. Daily or Weekly Backup"
+msgstr ""
+
+#: views/jobs.php:96
+msgid "Archive"
+msgstr ""
+
+#: views/jobs.php:100
+msgid "Filename"
+msgstr ""
+
+#: views/jobs.php:103
+#, php-format
+msgid "Filename: %s"
+msgstr ""
+
+#: views/jobs.php:107
+msgid "Compression"
+msgstr ""
+
+#: views/jobs.php:115
+msgid "Password-protect"
+msgstr ""
+
+#: views/jobs.php:123
+msgid "Split into volumes"
+msgstr ""
+
+#: views/jobs.php:126
+msgid "Split the backup into"
+msgstr ""
+
+#: views/jobs.php:127
+msgid "Mb volumes."
+msgstr ""
+
+#: views/jobs.php:129
+msgid ""
+"Splitting the backup into smaller volumes specially helps on a slow/"
+"unreliable network which might cause failures or interrupt a large data "
+"upload."
+msgstr ""
+
+#: views/jobs.php:140
+msgid "Run job"
+msgstr ""
+
+#: views/jobs.php:141
+msgid "Cron/Interval backup is available in Pro Version"
+msgstr ""
+
+#: views/jobs.php:144
+msgid "Manual"
+msgstr ""
+
+#: views/jobs.php:151
+msgid "Files"
+msgstr ""
+
+#: views/jobs.php:155
+msgid "Backup Files"
+msgstr ""
+
+#: views/jobs.php:157 views/jobs.php:163 views/jobs.php:170 views/jobs.php:186
+#: views/jobs.php:193
+msgid "Enable"
+msgstr ""
+
+#: views/jobs.php:160
+msgid "Backup Uploads Dir"
+msgstr ""
+
+#: views/jobs.php:164
+msgid "Note: Will not work if \"Backup Files\" is not checked."
+msgstr ""
+
+#: views/jobs.php:168
+msgid "Exclude File Filters"
+msgstr ""
+
+#: views/jobs.php:172
+msgid ""
+"Exclude files whose path matches any of the following glob patterns (one per "
+"line):"
+msgstr ""
+
+#: views/jobs.php:180
+msgid "Database"
+msgstr ""
+
+#: views/jobs.php:184
+msgid "Export Database"
+msgstr ""
+
+#: views/jobs.php:187
+msgid "Include a database export file to the backup."
+msgstr ""
+
+#: views/jobs.php:191
+msgid "Exclude Table Filters"
+msgstr ""
+
+#: views/jobs.php:195
+msgid "Exclude the following database tables:"
+msgstr ""
+
+#: views/jobs.php:210
+msgid "Backup Destination(Optional)"
+msgstr ""
+
+#: views/jobs.php:211
+msgid ""
+"If you want to save the backup on the same server then, you don't need to "
+"choose any listed service."
+msgstr ""
+
+#: views/jobs.php:219
+msgid "Press Ctrl to select more than 1 destination."
+msgstr ""
+
+#: views/jobs.php:226
+msgid "FTP Details"
+msgstr ""
+
+#: views/jobs.php:230
+msgid "Host"
+msgstr ""
+
+#: views/jobs.php:234 views/jobs.php:371
+msgid "Username"
+msgstr ""
+
+#: views/jobs.php:238 views/jobs.php:375
+msgid "Password"
+msgstr ""
+
+#: views/jobs.php:242
+msgid "Explicit SSL"
+msgstr ""
+
+#: views/jobs.php:246 views/jobs.php:355
+msgid "Port"
+msgstr ""
+
+#: views/jobs.php:250
+msgid "Root Folder"
+msgstr ""
+
+#: views/jobs.php:260
+msgid "Google Drive Details"
+msgstr ""
+
+#: views/jobs.php:264 views/jobs.php:284
+msgid "Access Token"
+msgstr ""
+
+#: views/jobs.php:267 views/jobs.php:285
+msgid "Generate Access Token"
+msgstr ""
+
+#: views/jobs.php:280
+msgid "Dropbox Details"
+msgstr ""
+
+#: views/jobs.php:299
+msgid "Reporters (optional)"
+msgstr ""
+
+#: views/jobs.php:305
+msgid "Press Ctrl to select more than 1 reporter."
+msgstr ""
+
+#: views/jobs.php:312
+msgid "E-Mail Details"
+msgstr ""
+
+#: views/jobs.php:315
+msgid "Sender Address"
+msgstr ""
+
+#: views/jobs.php:319
+msgid "Sender Name"
+msgstr ""
+
+#: views/jobs.php:323
+msgid "Recipient Address"
+msgstr ""
+
+#: views/jobs.php:327
+msgid "Subject"
+msgstr ""
+
+#: views/jobs.php:331
+msgid "Body"
+msgstr ""
+
+#: views/jobs.php:335
+msgid "Log File"
+msgstr ""
+
+#: views/jobs.php:339
+msgid "Method"
+msgstr ""
+
+#: views/jobs.php:348
+msgid "SMTP Details"
+msgstr ""
+
+#: views/jobs.php:351
+msgid "Server"
+msgstr ""
+
+#: views/jobs.php:359
+msgid "Protocol"
+msgstr ""
+
+#: views/jobs.php:382 views/settings.php:43
+msgid "Save Changes"
+msgstr ""
+
+#: views/jobs.php:401
+msgid "Dropbox Authorization Code"
+msgstr ""
+
+#: views/jobs.php:414
+msgid "Google Drive Authorization Code"
+msgstr ""
+
+#: views/jobs.php:423
+msgid "Exclude Files"
+msgstr ""
+
+#: views/jobs.php:424
+msgid "The following files/folders will be excluded from the backup:"
+msgstr ""
+
+#: views/settings.php:3
+msgid "My WP Backup Settings"
+msgstr ""
+
+#: views/settings.php:10
+msgid "Configure"
+msgstr ""
+
+#: views/settings.php:11 views/settings.php:65
+msgid "Import"
+msgstr ""
+
+#: views/settings.php:12
+msgid "Export"
+msgstr ""
+
+#: views/settings.php:22
+msgid "Time Limit"
+msgstr ""
+
+#: views/settings.php:25
+msgid "Duration in seconds a job is allowed to run before it gets terminated"
+msgstr ""
+
+#: views/settings.php:25
+msgid "set to 0 to disable"
+msgstr ""
+
+#: views/settings.php:29
+msgid "Max Upload Retries"
+msgstr ""
+
+#: views/settings.php:32
+msgid ""
+"Retry uploading the backup a number of times if it fails before skipping."
+msgstr ""
+
+#: views/settings.php:39
+msgid "Backup Dir"
+msgstr ""
+
+#: views/settings.php:53
+msgid "Paste Code"
+msgstr ""
+
+#: views/settings.php:59
+msgid "Upload File"
+msgstr ""
+
+#: views/settings.php:72
+msgid "Copy Code"
+msgstr ""
+
+#: views/settings.php:78
+msgid "Download File"
+msgstr ""
+
+#: views/settings.php:80
+msgid "Click here to download"
+msgstr ""
