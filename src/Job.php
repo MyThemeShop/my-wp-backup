@@ -92,8 +92,8 @@ class Job implements \ArrayAccess {
 		$this->basedir = $this->jobdir . $uniqid . '/';
 		$this->uniqid = $uniqid;
 
-		if ( ! is_dir( $this->basedir ) ) {
-			wp_mkdir_p( $this->basedir );
+		if ( ! is_dir( $this->basedir ) &&  ! wp_mkdir_p( $this->basedir ) ) {
+			throw new \Exception( __( 'Unable to create directory: %s.', 'my-wp-backup' ) );
 		}
 
 		if ( is_null( $this->backup ) ) {

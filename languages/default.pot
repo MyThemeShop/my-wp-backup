@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: My WP Backup 1.0.0\n"
 "Report-Msgid-Bugs-To: http://wordpress.org/support/plugin/my-wp-backup\n"
-"POT-Creation-Date: 2015-08-26 18:36+0800\n"
+"POT-Creation-Date: 2015-08-27 01:45+0800\n"
 "PO-Revision-Date: 2015-08-23 03:15+0530\n"
 "Last-Translator: MyThemeShop <support-team@mythemeshop.com>\n"
 "Language-Team: MyThemeShop <support-team@mythemeshop.com>\n"
@@ -652,6 +652,11 @@ msgstr ""
 #: src/Install/Activate.php:46
 #, php-format
 msgid "This plugin requires the %s PHP extension to function correctly."
+msgstr ""
+
+#: src/Job.php:96
+#, php-format
+msgid "Unable to create directory: %s."
 msgstr ""
 
 #: src/Job.php:235
