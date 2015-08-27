@@ -16,7 +16,7 @@ class ExportFile {
 
 		$this->job = $job;
 
-		$this->filePath = tempnam( sys_get_temp_dir(), 'my-wp-backup-export' );
+		$this->filePath = null === $job->get_backup() ? tempnam( sys_get_temp_dir(), 'my-wp-backup-export' ) : MyWPBackup::$info['root_dir'] . self::FILENAME;
 
 	}
 
