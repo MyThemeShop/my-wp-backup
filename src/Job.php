@@ -623,8 +623,6 @@ class Job implements \ArrayAccess {
 	 */
 	public function do_files( array $previous_files ) {
 
-		mb_internal_encoding( 'ISO-8859-1' );
-
 		$this->log( __( 'Comparing files...', 'my-wp-backup' ), 'debug' );
 
 		$excludes = array();
