@@ -2,6 +2,7 @@
 
 namespace MyWPBackup;
 
+use splitbrain\PHPArchive\FileInfo;
 use splitbrain\PHPArchive\Tar;
 use splitbrain\PHPArchive\Zip;
 use splitbrain\PHPArchive\Archive as Pharchive;
@@ -117,7 +118,6 @@ class Archive {
 		 * @var \DirectoryIterator $file
 		 */
 		foreach ( $files['iterator'] as $name => $file ) {
-
 			// Skip directories (they would be added automatically)
 			if ( $file->isDir() ) {
 				continue;
@@ -135,24 +135,7 @@ class Archive {
 			$this->job->log( sprintf( __( 'Adding file: %s....', 'my-wp-backup' ), $relativePath ), 'debug' );
 			$archive->addFile( $filePath, $relativePath );
 			$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-
-			$this->job->log( sprintf( __( 'Calculating checksum: %s....', 'my-wp-backup' ), $relativePath ), 'debug' );
-			$hash = hash_file( 'crc32b', $filePath );
-			$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-			$this->job->get_hashfile()->fwrite( "$hash $relativePath\n" );
 		}
-
-		foreach ( $files['filtered'] as $relativePath => $true ) {
-			$this->job->log( sprintf( __( 'Exclude file: %s (filtered)', 'my-wp-backup' ), $relativePath ), 'debug' );
-		}
-
-		foreach ( $files['unchanged'] as $relativePath => $true ) {
-			$this->job->log( sprintf( __( 'Exclude file: %s (unchanged)', 'my-wp-backup' ), $relativePath ), 'debug' );
-		}
-
-		$this->job->log( __( 'Adding checksum file...', 'my-wp-backup' ), 'debug' );
-		$archive->addFile( $this->job->get_hashfile()->getPathname(), '.my-wp-backup' );
-		$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 
 		if ( '1' === $this->job['export_db'] ) {
 			$this->job->log( __( 'Adding database export file...', 'my-wp-backup' ), 'debug' );
@@ -265,7 +248,6 @@ class Archive {
 
 			if ( \Phar::ZIP === $this->format ) {
 				$archive = new Zip();
-				$archive->open( $path );
 			} else {
 				$archive = new Tar();
 
@@ -273,41 +255,22 @@ class Archive {
 					$this->job->log( sprintf( __( 'Decompressing archive compressed with %s', 'my-wp-backup' ), Admin\Job::$compression_methods [ $this->job['compression'] ] ) );
 					$archive->setCompression( 9, $this->compression );
 				}
-
-				$archive->open( $path );
 			}
 
+			$archive->open( $path );
+			$contents = $archive->contents();
+
+			/** @var FileInfo $file */
+			foreach ( $contents as $file ) {
+				$this->job->log( sprintf( __( 'Extract file: %s', 'my-wp-backup' ), $file->getPath() ), 'debug' );
+			}
+
+			$archive->open( $path );
 			$archive->extract( MyWPBackup::$info['root_dir'] );
 
 			$this->job->log( __( 'Ok.', 'my-wp-backup' ) );
 
 		}
-
-	}
-
-	public function get_hashes() {
-
-		$this->job->log( __( 'Getting checksum file from archive...', 'my-wp-backup' ), 'debug' );
-
-		if ( \Phar::ZIP === $this->format ) {
-			$archive = new Zip();
-			$archive->open( $this->archives[0] );
-		} else {
-			$archive = new Tar();
-
-			if ( $this->is_compressed() ) {
-				$archive->setCompression( 9, $this->compression );
-			}
-
-			$archive->open( $this->archives[0] );
-		}
-
-		$archive->extract( sys_get_temp_dir(), '', '', '#\.my-wp-backup$#' );
-		$this->job->move_hashfile( sys_get_temp_dir() . '/.my-wp-backup' );
-
-		$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-
-		return $this->backup->get_files();
 
 	}
 

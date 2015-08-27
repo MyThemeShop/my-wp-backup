@@ -371,22 +371,6 @@ class Backup {
 			// Joins the file if backup has been split into smaller files.
 			// Uncompresses the file if compressed with bz2 or gz.
 			$archive->pre_restore();
-
-			$archive_files = $archive->get_hashes();
-			$job->do_files( $archive_files );
-			$files = $job->get_files();
-			iterator_to_array( $files['iterator'] );
-
-			foreach ( $archive_files as $relative_path => $hash ) {
-				if ( isset( $files['overwritten'][ $relative_path ] ) ) {
-					$job->log( sprintf( __( 'Overwrite file: %s', 'my-wp-backup' ), $relative_path ) );
-				} elseif ( isset( $files['unchanged'][ $relative_path ] ) ) {
-					$job->log( sprintf( __( 'Unchanged file: %s', 'my-wp-backup' ), $relative_path ), 'debug' );
-				} else {
-					$job->log( sprintf( __( 'Extract file: %s', 'my-wp-backup' ), $relative_path ), 'debug' );
-				}
-			}
-
 			$archive->restore();
 
 			if ( '1' === $job['split'] ) {
