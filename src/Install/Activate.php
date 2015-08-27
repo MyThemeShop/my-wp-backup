@@ -5,7 +5,7 @@ use MyWPBackup\Admin\Admin;
 
 class Activate {
 
-	const MIN_VER = '5.4.0';
+	const MIN_VER = '5.3.0';
 
 	public static function err( $message, $errno = E_USER_ERROR ) {
 
