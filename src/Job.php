@@ -894,16 +894,4 @@ class Job implements \ArrayAccess {
 
 	}
 
-	public function set_dbpath( $filePath ) {
-
-		$this->db = $filePath;
-
-	}
-
-	public function get_dbpath() {
-
-		return $this->db;
-
-	}
-
 }

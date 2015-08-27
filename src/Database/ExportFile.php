@@ -18,8 +18,6 @@ class ExportFile {
 
 		$this->filePath = tempnam( sys_get_temp_dir(), 'my-wp-backup-export' );
 
-		$job->set_dbpath( $this->filePath );
-
 	}
 
 	public function export() {
