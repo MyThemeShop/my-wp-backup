@@ -538,7 +538,8 @@ class Job {
 	public function validate( $attributes ) {
 
 		$jobs = get_site_option( 'my-wp-backup-jobs', array() );
-		$new_id = end( $jobs )['id'] + 1;
+		$last_job = end( $jobs );
+		$new_id = $last_job['id'] + 1;
 		$values = self::$form_defaults;
 		$cron_types = array( 'simple' => 'simple', 'advanced' => 'advanced' );
 		$shedule_types = array( 'manual' => 'manual', 'cron' => 'cron' );

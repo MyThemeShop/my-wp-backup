@@ -374,12 +374,13 @@ class Backup {
 
 			$archive_files = $archive->get_hashes();
 			$job->do_files( $archive_files );
-			iterator_to_array( $job->get_files()['iterator'] );
+			$files = $job->get_files();
+			iterator_to_array( $files['iterator'] );
 
 			foreach ( $archive_files as $relative_path => $hash ) {
-				if ( isset( $job->get_files()['overwritten'][ $relative_path ] ) ) {
+				if ( isset( $files['overwritten'][ $relative_path ] ) ) {
 					$job->log( sprintf( __( 'Overwrite file: %s', 'my-wp-backup' ), $relative_path ) );
-				} elseif ( isset( $job->get_files()['unchanged'][ $relative_path ] ) ) {
+				} elseif ( isset( $files['unchanged'][ $relative_path ] ) ) {
 					$job->log( sprintf( __( 'Unchanged file: %s', 'my-wp-backup' ), $relative_path ), 'debug' );
 				} else {
 					$job->log( sprintf( __( 'Extract file: %s', 'my-wp-backup' ), $relative_path ), 'debug' );
@@ -389,7 +390,7 @@ class Backup {
 			$archive->restore();
 
 			if ( '1' === $job['split'] ) {
-				unlink( $job->get_basedir() . '/' . $archive->get_archives()[0] );
+				unlink( $job->get_basedir() . '/' . reset( $archive->get_archives() ) );
 			}
 
 			$job->log( __( 'Importing database file...', 'my-wp-backup' ) );

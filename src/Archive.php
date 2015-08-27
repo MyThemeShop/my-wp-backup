@@ -111,11 +111,12 @@ class Archive {
 
 		$this->archives = array( $archive_name );
 
+		$files = $this->job->get_files();
 		/**
 		 * @var string $name filename
 		 * @var \DirectoryIterator $file
 		 */
-		foreach ( $this->job->get_files()['iterator'] as $name => $file ) {
+		foreach ( $files['iterator'] as $name => $file ) {
 
 			// Skip directories (they would be added automatically)
 			if ( $file->isDir() ) {
@@ -141,11 +142,11 @@ class Archive {
 			$this->job->get_hashfile()->fwrite( "$hash $relativePath\n" );
 		}
 
-		foreach ( $this->job->get_files()['filtered'] as $relativePath => $true ) {
+		foreach ( $files['filtered'] as $relativePath => $true ) {
 			$this->job->log( sprintf( __( 'Exclude file: %s (filtered)', 'my-wp-backup' ), $relativePath ), 'debug' );
 		}
 
-		foreach ( $this->job->get_files()['unchanged'] as $relativePath => $true ) {
+		foreach ( $files['unchanged'] as $relativePath => $true ) {
 			$this->job->log( sprintf( __( 'Exclude file: %s (unchanged)', 'my-wp-backup' ), $relativePath ), 'debug' );
 		}
 

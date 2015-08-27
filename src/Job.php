@@ -224,7 +224,8 @@ class Job implements \ArrayAccess {
 		foreach ( $this['destination'] as $destination ) {
 
 			$options = $this['destination_options'][ $destination ];
-			$maxretries = get_site_option( 'my-wp-backup-options', Admin\Admin::$options )['upload_retries'];
+			$settings = get_site_option( 'my-wp-backup-options', Admin\Admin::$options );
+			$maxretries = $settings['upload_retries'];
 			$retries = 0;
 
 			if ( method_exists( $this, 'upload_' . $destination ) ) {
@@ -254,7 +255,7 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Uploading backup via ftp', 'my-wp-backup' ) );
 
-		$filesystem = new Filesystem(new Ftp([
+		$filesystem = new Filesystem( new Ftp( array(
 			'host' => $options['host'],
 			'username' => $options['username'],
 			'password' => $options['password'],
@@ -263,7 +264,7 @@ class Job implements \ArrayAccess {
 			'passive' => true,
 			'ssl' => '1' === $options['ssl'],
 			'timeout' => 30,
-		]));
+		) ) );
 
 
 		if ( ! $filesystem->has( self::UPLOAD_ROOT_FOLDER ) ) {
@@ -638,7 +639,8 @@ class Job implements \ArrayAccess {
 		$overwritten = &$this->files['overwritten'];
 
 		$exclude_uploads = '1' !== $this['backup_uploads'];
-		$uploads_dir = wp_upload_dir()['basedir'];
+		$wp_upload_dir = wp_upload_dir();
+		$uploads_dir = $wp_upload_dir[ $['basedir'] ] ;
 
 		/**
 		 * @param \SplFileInfo $file
@@ -770,7 +772,7 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Downloading backup via ftp', 'my-wp-backup' ) );
 
-		$filesystem = new Filesystem(new Ftp([
+		$filesystem = new Filesystem( new Ftp( array(
 			'host' => $options['host'],
 			'username' => $options['username'],
 			'password' => $options['password'],
@@ -779,7 +781,7 @@ class Job implements \ArrayAccess {
 			'passive' => true,
 			'ssl' => '1' === $options['ssl'],
 			'timeout' => 30,
-		]));
+		) ) );
 
 		$info = $this->backup['destinations']['ftp'];
 

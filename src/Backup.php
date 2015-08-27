@@ -154,8 +154,11 @@ class Backup implements \ArrayAccess {
 
 	public function get_archives() {
 
-		return array_map( function( $filename ) {
-			return Admin\Job::get_instance()->get_basedir( $this['job']['id'], $this['uniqid'] ) . $filename;
+		$id = $this['job']['id'];
+		$uniqid = $this['uniqid'];
+
+		return array_map( function( $filename ) use( $id, $uniqid ) {
+			return Admin\Job::get_instance()->get_basedir( $id, $uniqid ) . $filename;
 		}, $this['archives'] );
 
 	}
