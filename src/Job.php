@@ -640,7 +640,7 @@ class Job implements \ArrayAccess {
 
 		$exclude_uploads = '1' !== $this['backup_uploads'];
 		$wp_upload_dir = wp_upload_dir();
-		$uploads_dir = $wp_upload_dir[ $['basedir'] ] ;
+		$uploads_dir = $wp_upload_dir[ 'basedir' ] ;
 
 		/**
 		 * @param \SplFileInfo $file
