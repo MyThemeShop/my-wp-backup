@@ -91,8 +91,8 @@ Please disable all plugins and check if backup is working properly. Then you can
 == Changelog ==
 
 = 1.1 =
-* Feature: Added Compatibility with 5.3.3
-* fixed: redirect to plugin dashboard on activation
+* Added Compatibility with PHP v5.3.3
+* Fixed: redirect to plugin dashboard on activation
 * Fixed: database file not deleted after backup restore
 * Fixed: Make sure backup directory is created
 * Minor bug fixes and improvements
