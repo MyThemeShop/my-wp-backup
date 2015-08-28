@@ -4,7 +4,7 @@ Creator's website link: http://mythemeshop.com/plugins/my-wp-backup/
 Tags: backup, backups, restore, dropbox backup, google drive backup, ftp backup, back up, multisite backup, restoration, sftp backup, migrate, mysql backup, database backup, db backups, website backup, wordpress backup, full backup
 Requires at least: 3.0.1
 Tested up to: 4.3
-Stable tag: 1.0.1
+Stable tag: 1.1
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,13 @@ Please disable all plugins and check if backup is working properly. Then you can
 9. Backup Log
 
 == Changelog ==
+
+= 1.1 =
+* Feature: Added Compatibility with 5.3.3
+* fixed: redirect to plugin dashboard on activation
+* Fixed: database file not deleted after backup restore
+* Fixed: Make sure backup directory is created
+* Minor bug fixes and improvements
 
 = 1.0.1 =
 * Check PHP version requirement on plugin activation.
