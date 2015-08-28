@@ -28,10 +28,6 @@ class Job extends \WP_CLI_Command {
 			exit;
 		} );
 
-		register_shutdown_function(function() {
-			var_dump( error_get_last() );
-		} );
-
 		$job = \MyWPBackup\Admin\Job::get_instance();
 		$job->cron_run( array( $id, uniqid(), isset( $assoc['verbose'] ) ) );
 

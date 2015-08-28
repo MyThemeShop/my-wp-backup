@@ -2,7 +2,6 @@
 
 namespace MyWPBackup;
 
-use splitbrain\PHPArchive\FileInfo;
 use splitbrain\PHPArchive\Tar;
 use splitbrain\PHPArchive\Zip;
 use splitbrain\PHPArchive\Archive as Pharchive;
@@ -135,7 +134,10 @@ class Archive {
 			$this->job->log( sprintf( __( 'Adding file: %s....', 'my-wp-backup' ), $relativePath ), 'debug' );
 			$archive->addFile( $filePath, $relativePath );
 			$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+			$this->job->get_hashfile()->fwrite( "ok $relativePath\n" );
 		}
+
+		$archive->addFile( $this->job->get_hashfile()->getPathname(), '.my-wp-backup' );
 
 		if ( '1' === $this->job['export_db'] ) {
 			$this->job->log( __( 'Adding database export file...', 'my-wp-backup' ), 'debug' );
@@ -271,6 +273,31 @@ class Archive {
 			$this->job->log( __( 'Ok.', 'my-wp-backup' ) );
 
 		}
+
+	}
+
+	public function get_hashes() {
+
+		$this->job->log( __( 'Getting checksum file from archive...', 'my-wp-backup' ), 'debug' );
+
+		if ( \Phar::ZIP === $this->format ) {
+			$archive = new Zip();
+		} else {
+			$archive = new Tar();
+
+			if ( $this->is_compressed() ) {
+				$archive->setCompression( 9, $this->compression );
+			}
+		}
+
+		$archive->open( $this->archives[0] );
+
+		$archive->extract( sys_get_temp_dir(), '', '', '#\.my-wp-backup$#' );
+		$this->job->move_hashfile( sys_get_temp_dir() . '/.my-wp-backup' );
+
+		$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+
+		return $this->backup->get_files();
 
 	}
 

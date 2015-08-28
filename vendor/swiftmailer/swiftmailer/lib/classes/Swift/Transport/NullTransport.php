@@ -16,14 +16,14 @@
 class Swift_Transport_NullTransport implements Swift_Transport
 {
     /** The event dispatcher from the plugin API */
-    private $eventDispatcher;
+    private $_eventDispatcher;
 
     /**
      * Constructor.
      */
     public function __construct(Swift_Events_EventDispatcher $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
+        $this->_eventDispatcher = $eventDispatcher;
     }
 
     /**
@@ -60,8 +60,8 @@ class Swift_Transport_NullTransport implements Swift_Transport
      */
     public function send(Swift_Mime_Message $message, &$failedRecipients = null)
     {
-        if ($evt = $this->eventDispatcher->createSendEvent($this, $message)) {
-            $this->eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
+        if ($evt = $this->_eventDispatcher->createSendEvent($this, $message)) {
+            $this->_eventDispatcher->dispatchEvent($evt, 'beforeSendPerformed');
             if ($evt->bubbleCancelled()) {
                 return 0;
             }
@@ -69,7 +69,7 @@ class Swift_Transport_NullTransport implements Swift_Transport
 
         if ($evt) {
             $evt->setResult(Swift_Events_SendEvent::RESULT_SUCCESS);
-            $this->eventDispatcher->dispatchEvent($evt, 'sendPerformed');
+            $this->_eventDispatcher->dispatchEvent($evt, 'sendPerformed');
         }
 
         $count = (
@@ -88,6 +88,6 @@ class Swift_Transport_NullTransport implements Swift_Transport
      */
     public function registerPlugin(Swift_Events_EventListener $plugin)
     {
-        $this->eventDispatcher->bindEventListener($plugin);
+        $this->_eventDispatcher->bindEventListener($plugin);
     }
 }

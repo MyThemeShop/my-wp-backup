@@ -18,6 +18,8 @@ class ExportFile {
 
 		$this->filePath = null === $job->get_backup() ? tempnam( sys_get_temp_dir(), 'my-wp-backup-export' ) : MyWPBackup::$info['root_dir'] . self::FILENAME;
 
+		$job->set_dbpath( $this->filePath );
+
 	}
 
 	public function export() {
@@ -44,7 +46,7 @@ class ExportFile {
 			'username' => DB_USER,
 			'password' => DB_PASSWORD,
 			'db_name'  => DB_NAME,
-			'exclude_tables' => $job['table_filters'],
+			'exclude_tables' => $this->job['table_filters'],
 		), $this->job );
 
 		$dumper->dump( $this->filePath, $wpdb->prefix );

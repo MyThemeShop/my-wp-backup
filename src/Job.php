@@ -3,9 +3,8 @@
 namespace MyWPBackup;
 
 use Dropbox\Client;
-use League\Flysystem\Adapter\Ftp;
-use League\Flysystem\Dropbox\DropboxAdapter;
-use League\Flysystem\Filesystem;
+use Dropbox\WriteMode;
+use Melihucar\FtpClient\FtpClient;
 use Webmozart\Glob\Glob;
 use Webmozart\PathUtil\Path;
 
@@ -255,38 +254,51 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Uploading backup via ftp', 'my-wp-backup' ) );
 
-		$filesystem = new Filesystem( new Ftp( array(
-			'host' => $options['host'],
-			'username' => $options['username'],
-			'password' => $options['password'],
-			'port' => $options['port'],
-			'root' => $options['folder'],
-			'passive' => true,
-			'ssl' => '1' === $options['ssl'],
-			'timeout' => 30,
-		) ) );
+		$ftp = new FtpClient();
 
+		$this->log( __( 'Connecting to FTP host..', 'my-wp-backup' ), 'debug' );
+		$ftp->connect( $options['host'], '1' === $options['ssl'], $options['port'] );
+		$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 
-		if ( ! $filesystem->has( self::UPLOAD_ROOT_FOLDER ) ) {
-			$filesystem->createDir( self::UPLOAD_ROOT_FOLDER );
+		$this->log( __( 'Logging in..', 'my-wp-backup' ), 'debug' );
+		$ftp->login( $options['username'], $options['password'] );
+		$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+
+		$ftp->binary( true );
+		$ftp->passive( true );
+
+		$root = $options['folder'] . self::UPLOAD_ROOT_FOLDER;
+
+		try {
+			$this->log( __( 'Check if ftp root folder exists...', 'my-wp-backup' ), 'debug' );
+			$ftp->listDirectory( $root );
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+		} catch ( \Exception $e ) {
+			$this->log( __( 'Creating ftp root folder...', 'my-wp-backup' ), 'debug' );
+			$ftp->createDirectory( $root );
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
-		$basedir = wpb_join_remote_path( self::UPLOAD_ROOT_FOLDER, $this->uniqid );
-		$filesystem->createDir( $basedir );
+		$basedir = wpb_join_remote_path( $root, $this->uniqid );
+
+		// Incase this was an upload retry.
+		try {
+			$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $basedir ), 'debug' );
+			$ftp->createDirectory( $basedir );
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+		} catch ( \Exception $e ) { }
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
 			$remote_filepath = wpb_join_remote_path( $basedir, $basename );
-			$fp = fopen( $path, 'r' );
 
-			$this->log( sprintf( __( 'Uploading %s via ftp...', 'my-wp-backup' ), $basename ), 'debug' );
+			$this->log( sprintf( __( 'Uploading %s via ftp...', 'my-wp-backup' ), $remote_filepath ), 'debug' );
 
-			$filesystem->writeStream( $remote_filepath, $fp );
+			$ftp->put( $remote_filepath, $path );
 			$this->destinations['ftp'][ $basename ] = array(
 				'path' => $remote_filepath,
 			);
 
-			fclose( $fp );
 			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $basename ), 'debug' );
 		}
 
@@ -298,17 +310,19 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Uploading backup via dropbox', 'my-wp-backup' ) );
 
-		$client     = new Client( $options['token'], 'my-wp-backup' );
-		$adapter    = new DropboxAdapter( $client );
-		$filesystem = new Filesystem( $adapter );
+		$client = new Client( $options['token'], 'my-wp-backup' );
 
-
-		if ( ! $filesystem->has( self::UPLOAD_ROOT_FOLDER ) ) {
-			$filesystem->createDir( self::UPLOAD_ROOT_FOLDER );
+		$rootdir = '/' . self::UPLOAD_ROOT_FOLDER;
+		if ( ! ( $rootinfo = $client->getMetadata( $rootdir ) ) || ! $rootinfo['is_dir'] ) {
+			$this->log( sprintf( __( 'Creating root folder %s...', 'my-wp-backup' ), $rootdir ), 'debug' );
+			$client->createFolder( $rootdir );
 		}
 
-		$basedir = wpb_join_remote_path( self::UPLOAD_ROOT_FOLDER, $this->uniqid );
-		$filesystem->createDir( $basedir );
+		$basedir = wpb_join_remote_path( $rootdir, $this->uniqid );
+		if ( ! ( $baseinfo = $client->getMetadata( $basedir ) ) || ! $baseinfo['is_dir'] ) {
+			$this->log( sprintf( __( 'Creating folder %s...', 'my-wp-backup' ), $basedir ), 'debug' );
+			$client->createFolder( $basedir );
+		}
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
@@ -316,12 +330,14 @@ class Job implements \ArrayAccess {
 			$fp = fopen( $path, 'r' );
 
 			$this->log( sprintf( __( 'Uploading %s via dropbox...', 'my-wp-backup' ), $basename ), 'debug' );
-			$filesystem->writeStream( $remote_filepath, $fp );
+			$client->uploadFile( $remote_filepath, WriteMode::add(), $fp );
 			$this->destinations['dropbox'][ $basename ] = array(
 				'path' => $remote_filepath,
 			);
 
-			fclose( $fp );
+			if( is_resource( $fp ) ) {
+				fclose( $fp );
+			}
 			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $basename ), 'debug' );
 		}
 
@@ -638,7 +654,7 @@ class Job implements \ArrayAccess {
 
 		$exclude_uploads = '1' !== $this['backup_uploads'];
 		$wp_upload_dir = wp_upload_dir();
-		$uploads_dir = $wp_upload_dir[ 'basedir' ] ;
+		$uploads_dir = $wp_upload_dir['basedir'] ;
 
 		/**
 		 * @param \SplFileInfo $file
@@ -694,7 +710,7 @@ class Job implements \ArrayAccess {
 		}
 
 		$this->files['iterator'] = new \RecursiveIteratorIterator(
-			new \RecursiveCallbackFilterIterator( $base_iterator, $filter )
+			new RecursiveCallbackFilterIterator( $base_iterator, $filter )
 		);
 
 		$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
@@ -770,36 +786,27 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Downloading backup via ftp', 'my-wp-backup' ) );
 
-		$filesystem = new Filesystem( new Ftp( array(
-			'host' => $options['host'],
-			'username' => $options['username'],
-			'password' => $options['password'],
-			'port' => $options['port'],
-			'root' => $options['folder'],
-			'passive' => true,
-			'ssl' => '1' === $options['ssl'],
-			'timeout' => 30,
-		) ) );
+		$ftp = new FtpClient();
+
+		$this->log( __( 'Connecting to FTP host..', 'my-wp-backup' ), 'debug' );
+		$ftp->connect( $options['host'], '1' === $options['ssl'], $options['port'] );
+		$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+
+		$this->log( __( 'Logging in..', 'my-wp-backup' ), 'debug' );
+		$ftp->login( $options['username'], $options['password'] );
+		$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+
+		$ftp->passive( true );
+		$ftp->binary( true );
 
 		$info = $this->backup['destinations']['ftp'];
 
 		foreach ( $this->backup['archives'] as $archive ) {
 			$remote_filename = $info[ $archive ]['path'];
-			$remote = $filesystem->get( $info[ $archive ]['path'] )->readStream();
+			$local_filename = $this->basedir . $archive;
 
 			$this->log( sprintf( __( 'Downloading %s via ftp...', 'my-wp-backup' ), $remote_filename ), 'debug' );
-
-			$local_filename = $this->basedir . $archive;
-			$local = fopen( $local_filename, 'wb' );
-
-			$this->log( sprintf( __( 'Local path: %s', 'my-wp-backup' ), $local_filename ), 'debug' );
-
-			rewind( $remote );
-			while ( $chunk = fread( $remote, 1048576 ) ) {
-				fwrite( $local, $chunk );
-			}
-
-			fclose( $local );
+			$ftp->get( $local_filename, $remote_filename );
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
@@ -811,15 +818,11 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Downloading backup via dropbox', 'my-wp-backup' ) );
 
-		$client     = new Client( $options['token'], 'my-wp-backup' );
-		$adapter    = new DropboxAdapter( $client );
-		$filesystem = new Filesystem( $adapter );
-
+		$client = new Client( $options['token'], 'my-wp-backup' );
 		$info = $this->backup['destinations']['dropbox'];
 
 		foreach ( $this->backup['archives'] as $archive ) {
 			$remote_filename = $info[ $archive ]['path'];
-			$remote = $filesystem->get( $info[ $archive ]['path'] )->readStream();
 
 			$this->log( sprintf( __( 'Downloading %s via dropbox...', 'my-wp-backup' ), $remote_filename ), 'debug' );
 
@@ -828,12 +831,13 @@ class Job implements \ArrayAccess {
 
 			$this->log( sprintf( __( 'Local path: %s', 'my-wp-backup' ), $local_filename ), 'debug' );
 
-			rewind( $remote );
-			while ( $chunk = fread( $remote, 1048576 ) ) {
-				fwrite( $local, $chunk );
+			if ( null === $client->getFile( $remote_filename, $local ) ) {
+				throw new \Exception( sprintf( __( '%s is missing from Dropbox. Select another destination!', 'my-wp-backup' ), $remote_filename ) );
 			}
 
-			fclose( $local );
+			if ( is_resource( $local ) ) {
+				fclose( $local );
+			}
 			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $archive ), 'debug' );
 		}
 
@@ -874,7 +878,9 @@ class Job implements \ArrayAccess {
 			$httpclient->setDefaultOption( 'headers/Authorization', 'Bearer ' . $token['access_token'] );
 			$httpclient->get( $url )->setResponseBody( $local )->send();
 
-			fclose( $local );
+			if ( is_resource( $local ) ) {
+				fclose( $local );
+			}
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
@@ -891,6 +897,18 @@ class Job implements \ArrayAccess {
 	public function set_basedir( $basedir ) {
 
 		$this->basedir = $basedir;
+
+	}
+
+	public function set_dbpath( $filePath ) {
+
+		$this->db = $filePath;
+
+	}
+
+	public function get_dbpath() {
+
+		return $this->db;
 
 	}
 

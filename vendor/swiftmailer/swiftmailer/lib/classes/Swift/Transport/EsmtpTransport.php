@@ -20,21 +20,21 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      *
      * @var Swift_Transport_EsmtpHandler[]
      */
-    private $handlers = array();
+    private $_handlers = array();
 
     /**
      * ESMTP capabilities.
      *
      * @var string[]
      */
-    private $capabilities = array();
+    private $_capabilities = array();
 
     /**
      * Connection buffer parameters.
      *
      * @var array
      */
-    private $params = array(
+    private $_params = array(
         'protocol' => 'tcp',
         'host' => 'localhost',
         'port' => 25,
@@ -66,7 +66,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function setHost($host)
     {
-        $this->params['host'] = $host;
+        $this->_params['host'] = $host;
 
         return $this;
     }
@@ -78,7 +78,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getHost()
     {
-        return $this->params['host'];
+        return $this->_params['host'];
     }
 
     /**
@@ -90,7 +90,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function setPort($port)
     {
-        $this->params['port'] = (int) $port;
+        $this->_params['port'] = (int) $port;
 
         return $this;
     }
@@ -102,7 +102,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getPort()
     {
-        return $this->params['port'];
+        return $this->_params['port'];
     }
 
     /**
@@ -114,8 +114,8 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function setTimeout($timeout)
     {
-        $this->params['timeout'] = (int) $timeout;
-        $this->buffer->setParam('timeout', (int) $timeout);
+        $this->_params['timeout'] = (int) $timeout;
+        $this->_buffer->setParam('timeout', (int) $timeout);
 
         return $this;
     }
@@ -127,7 +127,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getTimeout()
     {
-        return $this->params['timeout'];
+        return $this->_params['timeout'];
     }
 
     /**
@@ -140,11 +140,11 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     public function setEncryption($encryption)
     {
         if ('tls' == $encryption) {
-            $this->params['protocol'] = 'tcp';
-            $this->params['tls'] = true;
+            $this->_params['protocol'] = 'tcp';
+            $this->_params['tls'] = true;
         } else {
-            $this->params['protocol'] = $encryption;
-            $this->params['tls'] = false;
+            $this->_params['protocol'] = $encryption;
+            $this->_params['tls'] = false;
         }
 
         return $this;
@@ -157,7 +157,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getEncryption()
     {
-        return $this->params['tls'] ? 'tls' : $this->params['protocol'];
+        return $this->_params['tls'] ? 'tls' : $this->_params['protocol'];
     }
 
     /**
@@ -169,7 +169,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function setSourceIp($source)
     {
-        $this->params['sourceIp'] = $source;
+        $this->_params['sourceIp'] = $source;
 
         return $this;
     }
@@ -181,7 +181,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getSourceIp()
     {
-        return isset($this->params['sourceIp']) ? $this->params['sourceIp'] : null;
+        return isset($this->_params['sourceIp']) ? $this->_params['sourceIp'] : null;
     }
 
     /**
@@ -197,9 +197,9 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
         foreach ($handlers as $handler) {
             $assoc[$handler->getHandledKeyword()] = $handler;
         }
-        uasort($assoc, array($this, 'sortHandlers'));
-        $this->handlers = $assoc;
-        $this->setHandlerParams();
+        uasort($assoc, array($this, '_sortHandlers'));
+        $this->_handlers = $assoc;
+        $this->_setHandlerParams();
 
         return $this;
     }
@@ -211,7 +211,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
      */
     public function getExtensionHandlers()
     {
-        return array_values($this->handlers);
+        return array_values($this->_handlers);
     }
 
     /**
@@ -231,7 +231,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
         $failures = (array) $failures;
         $stopSignal = false;
         $response = null;
-        foreach ($this->getActiveHandlers() as $handler) {
+        foreach ($this->_getActiveHandlers() as $handler) {
             $response = $handler->onCommand(
                 $this, $command, $codes, $failures, $stopSignal
                 );
@@ -248,7 +248,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     /** Mixin handling method for ESMTP handlers */
     public function __call($method, $args)
     {
-        foreach ($this->handlers as $handler) {
+        foreach ($this->_handlers as $handler) {
             if (in_array(strtolower($method),
                 array_map('strtolower', (array) $handler->exposeMixinMethods())
                 )) {
@@ -265,53 +265,53 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     }
 
     /** Get the params to initialize the buffer */
-    protected function getBufferParams()
+    protected function _getBufferParams()
     {
-        return $this->params;
+        return $this->_params;
     }
 
     /** Overridden to perform EHLO instead */
-    protected function doHeloCommand()
+    protected function _doHeloCommand()
     {
         try {
             $response = $this->executeCommand(
-                sprintf("EHLO %s\r\n", $this->domain), array(250)
+                sprintf("EHLO %s\r\n", $this->_domain), array(250)
                 );
         } catch (Swift_TransportException $e) {
-            return parent::doHeloCommand();
+            return parent::_doHeloCommand();
         }
 
-        if ($this->params['tls']) {
+        if ($this->_params['tls']) {
             try {
                 $this->executeCommand("STARTTLS\r\n", array(220));
 
-                if (!$this->buffer->startTLS()) {
+                if (!$this->_buffer->startTLS()) {
                     throw new Swift_TransportException('Unable to connect with TLS encryption');
                 }
 
                 try {
                     $response = $this->executeCommand(
-                        sprintf("EHLO %s\r\n", $this->domain), array(250)
+                        sprintf("EHLO %s\r\n", $this->_domain), array(250)
                         );
                 } catch (Swift_TransportException $e) {
-                    return parent::doHeloCommand();
+                    return parent::_doHeloCommand();
                 }
             } catch (Swift_TransportException $e) {
-                $this->throwException($e);
+                $this->_throwException($e);
             }
         }
 
-        $this->capabilities = $this->getCapabilities($response);
-        $this->setHandlerParams();
-        foreach ($this->getActiveHandlers() as $handler) {
+        $this->_capabilities = $this->_getCapabilities($response);
+        $this->_setHandlerParams();
+        foreach ($this->_getActiveHandlers() as $handler) {
             $handler->afterEhlo($this);
         }
     }
 
     /** Overridden to add Extension support */
-    protected function doMailFromCommand($address)
+    protected function _doMailFromCommand($address)
     {
-        $handlers = $this->getActiveHandlers();
+        $handlers = $this->_getActiveHandlers();
         $params = array();
         foreach ($handlers as $handler) {
             $params = array_merge($params, (array) $handler->getMailParams());
@@ -323,9 +323,9 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     }
 
     /** Overridden to add Extension support */
-    protected function doRcptToCommand($address)
+    protected function _doRcptToCommand($address)
     {
-        $handlers = $this->getActiveHandlers();
+        $handlers = $this->_getActiveHandlers();
         $params = array();
         foreach ($handlers as $handler) {
             $params = array_merge($params, (array) $handler->getRcptParams());
@@ -337,7 +337,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     }
 
     /** Determine ESMTP capabilities by function group */
-    private function getCapabilities($ehloResponse)
+    private function _getCapabilities($ehloResponse)
     {
         $capabilities = array();
         $ehloResponse = trim($ehloResponse);
@@ -356,21 +356,21 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     }
 
     /** Set parameters which are used by each extension handler */
-    private function setHandlerParams()
+    private function _setHandlerParams()
     {
-        foreach ($this->handlers as $keyword => $handler) {
-            if (array_key_exists($keyword, $this->capabilities)) {
-                $handler->setKeywordParams($this->capabilities[$keyword]);
+        foreach ($this->_handlers as $keyword => $handler) {
+            if (array_key_exists($keyword, $this->_capabilities)) {
+                $handler->setKeywordParams($this->_capabilities[$keyword]);
             }
         }
     }
 
     /** Get ESMTP handlers which are currently ok to use */
-    private function getActiveHandlers()
+    private function _getActiveHandlers()
     {
         $handlers = array();
-        foreach ($this->handlers as $keyword => $handler) {
-            if (array_key_exists($keyword, $this->capabilities)) {
+        foreach ($this->_handlers as $keyword => $handler) {
+            if (array_key_exists($keyword, $this->_capabilities)) {
                 $handlers[] = $handler;
             }
         }
@@ -379,7 +379,7 @@ class Swift_Transport_EsmtpTransport extends Swift_Transport_AbstractSmtpTranspo
     }
 
     /** Custom sort for extension handler ordering */
-    private function sortHandlers($a, $b)
+    private function _sortHandlers($a, $b)
     {
         return $a->getPriorityOver($b->getHandledKeyword());
     }

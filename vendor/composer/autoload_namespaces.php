@@ -6,8 +6,9 @@ $vendorDir = dirname(dirname(__FILE__));
 $baseDir = dirname($vendorDir);
 
 return array(
-    'Egulias\\' => array($vendorDir . '/egulias/email-validator/src'),
+    'Melihucar' => array($vendorDir . '/melihucar/ftpclient/src'),
+    'Guzzle\\Tests' => array($vendorDir . '/guzzlehttp/guzzle/tests'),
+    'Guzzle' => array($vendorDir . '/guzzlehttp/guzzle/src'),
     'Dropbox' => array($vendorDir . '/dropbox/dropbox-sdk/lib'),
-    'Doctrine\\Common\\Lexer\\' => array($vendorDir . '/doctrine/lexer/lib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
 );

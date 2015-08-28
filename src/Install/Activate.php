@@ -5,7 +5,7 @@ use MyWPBackup\Admin\Admin;
 
 class Activate {
 
-	const MIN_VER = '5.3.0';
+	const MIN_VER = '5.3.3';
 
 	public static function err( $message, $errno = E_USER_ERROR ) {
 
@@ -39,7 +39,7 @@ class Activate {
 			self::err( __( 'This plugin requires the 64-bit version of PHP to function correctly.', 'my-wp-backup' ) );
 		}
 
-		$extensions = array( 'zlib', 'bz2', 'SPL', 'curl', 'mbstring' );
+		$extensions = array( 'zlib', 'bz2', 'SPL', 'curl', 'mbstring', 'ftp' );
 
 		foreach ( $extensions as $extension ) {
 			if ( ! extension_loaded( $extension ) ) {
@@ -48,8 +48,6 @@ class Activate {
 		}
 
 		set_transient( '_my-wp-backup-activated', true, 30 );
-
-		wp_redirect( Admin::get_page_url( '' ) );
 
 	}
 

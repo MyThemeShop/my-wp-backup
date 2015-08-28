@@ -1,0 +1,23 @@
+{
+  "name": "melihucar/ftpclient",
+  "description": "FTPClient for PHP",
+  "version": "1.0",
+  "type": "library",
+  "keywords": ["php", "ftp", "client", "ftpclient", "class"],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Melih Ucar",
+      "homepage": "https://github.com/melihucar"
+    }
+  ],
+  "require": {
+    "php": ">=5.3.0",
+    "ext-ftp": "*"
+  },
+  "autoload": {
+    "psr-0": {
+      "Melihucar": "src/"
+    }
+  }
+}

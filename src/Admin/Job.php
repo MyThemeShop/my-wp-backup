@@ -4,6 +4,7 @@ namespace MyWPBackup\Admin;
 use Cron\CronExpression;
 use Dropbox\AppInfo;
 use Dropbox\WebAuthNoRedirect;
+use MyWPBackup\RecursiveCallbackFilterIterator;
 use Webmozart\Glob\Glob;
 use Webmozart\PathUtil\Path;
 use MyWPBackup\Archive;
@@ -776,7 +777,7 @@ class Job {
 		};
 
 		$files = new \RecursiveIteratorIterator(
-			new \RecursiveCallbackFilterIterator( new \RecursiveDirectoryIterator( MyWPBackup::$info['root_dir'], \RecursiveDirectoryIterator::SKIP_DOTS ), $filter )
+			new RecursiveCallbackFilterIterator( new \RecursiveDirectoryIterator( MyWPBackup::$info['root_dir'], \RecursiveDirectoryIterator::SKIP_DOTS ), $filter )
 		);
 
 		iterator_to_array( $files );

@@ -1,0 +1,35 @@
+{
+  "name": "mythemeshop/wp-backup",
+  "authors": [
+    {
+      "name": "Cyrus",
+      "email": "david@jcyr.us"
+    }
+  ],
+  "require": {
+    "google/apiclient": "^1.1@dev",
+    "swiftmailer/swiftmailer": "@stable",
+    "webmozart/glob": "^2.0@dev",
+    "mtdowling/cron-expression": "dev-master",
+    "splitbrain/php-archive": "dev-master",
+    "dropbox/dropbox-sdk": "dev-master",
+    "melihucar/ftpclient": "dev-master",
+    "guzzlehttp/guzzle": "3.8.1"
+  },
+  "config": {
+    "preferred-install": "dist",
+    "optimize-autoloader": true
+  },
+  "autoload": {
+    "psr-4": {
+      "MyWPBackup\\": "src/"
+    },
+    "files": [
+      "src/util.php"
+    ]
+  },
+  "minimum-stability": "dev",
+  "require-dev": {
+    "wp-cli/wp-cli": "dev-master"
+  }
+}

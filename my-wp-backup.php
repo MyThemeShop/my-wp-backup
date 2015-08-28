@@ -37,7 +37,7 @@ require( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
 register_activation_hook( __FILE__, array( 'MyWPBackup\Install\Activate', 'run' ) );
 register_deactivation_hook( __FILE__, array( 'MyWPBackup\Install\Deactivate', 'run' ) );
 
-MyWPBackup::get_instance();
+add_action( 'plugins_loaded', 'MyWPBackup\MyWPBackup::get_instance' );
 
 class MyWPBackup {
 
@@ -57,7 +57,7 @@ class MyWPBackup {
 
 		if ( false !== get_transient( '_my-wp-backup-activated' ) ) {
 			delete_transient( '_my-wp-backup-activated' );
-//			wp_safe_redirect( Admin::get_page_url( '' ) ); stopped working?
+			wp_redirect( Admin::get_page_url( '' ) );
 		}
 
 		self::$info = get_file_data( __FILE__, array(
@@ -85,33 +85,15 @@ class MyWPBackup {
 		self::$info['root_dir'] = trailingslashit( ABSPATH );
 
 
-		if ( defined('WP_CLI') && WP_CLI ) {
+		if ( defined( 'WP_CLI' ) && WP_CLI ) {
 			\WP_CLI::add_command( 'job', new Cli\Job() );
 			\WP_CLI::add_command( 'backup', new Cli\Backup() );
 		}
-
-		add_filter( 'cron_schedules', array( $this, '_action_cron_schedules') );
 
 		add_action( 'wp_backup_run_job', array( Job::get_instance(), 'cron_run' ) );
 		add_action( 'wp_backup_run_scheduled_job', array( Job::get_instance(), 'cron_scheduled_run' ) );
 		add_action( 'wp_backup_restore_backup', array( Backup::get_instance(), 'cron_run' ) );
 
-	}
-
-	public function _action_cron_schedules( $schedules ) {
-		$schedules['weekly'] = array(
-			'interval' => 604800,
-			'display' => __( 'Once Weekly', 'my-wp-backup' ),
-		);
-		$schedules['fortnightly'] = array(
-			'interval' => 1209600,
-			'display' => __( 'Once Fortnightly', 'my-wp-backup' ),
-		);
-		$schedules['monthly'] = array(
-			'interval' => 2678400,
-			'display' => __( 'Once Monthly', 'my-wp-backup' ),
-		);
-		return $schedules;
 	}
 
 	public static function get_instance() {
