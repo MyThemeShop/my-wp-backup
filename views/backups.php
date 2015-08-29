@@ -1,6 +1,8 @@
 <?php
 use MyWPBackup\Admin\Admin;
 use MyWPBackup\Admin\Table\Backup;
+
+if ( ! defined( 'ABSPATH' ) ) { die; }
 ?>
 <div class="page-backups wrap" id="my-wp-backup">
 

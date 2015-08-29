@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { die; } ?>
 <div class="wrap page-settings" id="my-wp-backup">
 
 	<h2><?php esc_html_e( 'My WP Backup Settings', 'my-wp-backup' ); ?></h2>

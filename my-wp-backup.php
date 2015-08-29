@@ -6,6 +6,8 @@ use MyWPBackup\Admin\Admin;
 use MyWPBackup\Admin\Backup;
 use MyWPBackup\Admin\Job;
 
+if ( ! defined( 'ABSPATH' ) ) { die; }
+
 /**
  *
  * @link              https://mythemeshop.com
@@ -25,20 +27,6 @@ use MyWPBackup\Admin\Job;
  * Support URI:       https://community.mythemeshop.com
  * Network:           true
  */
-
-
-// If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
-	die;
-}
-
-require( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
-
-register_activation_hook( __FILE__, array( 'MyWPBackup\Install\Activate', 'run' ) );
-register_deactivation_hook( __FILE__, array( 'MyWPBackup\Install\Deactivate', 'run' ) );
-
-add_action( 'plugins_loaded', 'MyWPBackup\MyWPBackup::get_instance' );
-
 class MyWPBackup {
 
 	/**
@@ -106,3 +94,10 @@ class MyWPBackup {
 
 	}
 }
+
+require( plugin_dir_path( __FILE__ ) . 'vendor/autoload.php' );
+
+register_activation_hook( __FILE__, array( 'MyWPBackup\Install\Activate', 'run' ) );
+register_deactivation_hook( __FILE__, array( 'MyWPBackup\Install\Deactivate', 'run' ) );
+
+add_action( 'plugins_loaded', 'MyWPBackup\MyWPBackup::get_instance' );

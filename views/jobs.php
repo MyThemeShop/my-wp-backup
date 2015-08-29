@@ -2,6 +2,8 @@
 use MyWPBackup\Admin\Job;
 use MyWPBackup\Admin\Table\Job as JobTable;
 use MyWPBackup\Admin\Admin as Admin;
+
+if ( ! defined( 'ABSPATH' ) ) { die; }
 ?>
 <div class="page-backups wrap" id="my-wp-backup">
 

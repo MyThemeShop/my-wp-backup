@@ -1,3 +1,4 @@
+<?php if ( ! defined( 'ABSPATH' ) ) { die; } ?>
 <div class="wrap page-about" id="my-wp-backup">
 	<h1><?php echo esc_html( sprintf( __( 'Welcome to My WP Backup %s', 'my-wp-backup' ), \MyWPBackup\MyWPBackup::$info['version'] ) ); ?></h1>
 

@@ -1,5 +1,7 @@
 <?php
 
+if ( ! defined( 'ABSPATH' ) ) { die; }
+
 /**
  * @param array $options
  * @param mixed $selected
