@@ -266,12 +266,13 @@ class Job implements \ArrayAccess {
 
 		$ftp->binary( true );
 		$ftp->passive( true );
+		$ftp->changeDirectory( $options['folder'] );
 
 		$root = $options['folder'] . self::UPLOAD_ROOT_FOLDER;
 
 		try {
 			$this->log( __( 'Check if ftp root folder exists...', 'my-wp-backup' ), 'debug' );
-			$ftp->listDirectory( $root );
+			$ftp->changeDirectory( $root );
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		} catch ( \Exception $e ) {
 			$this->log( __( 'Creating ftp root folder...', 'my-wp-backup' ), 'debug' );
@@ -283,10 +284,12 @@ class Job implements \ArrayAccess {
 
 		// Incase this was an upload retry.
 		try {
+			$ftp->changeDirectory( $basedir );
+		} catch ( \Exception $e ) {
 			$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $basedir ), 'debug' );
 			$ftp->createDirectory( $basedir );
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-		} catch ( \Exception $e ) { }
+		}
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
@@ -798,6 +801,7 @@ class Job implements \ArrayAccess {
 
 		$ftp->passive( true );
 		$ftp->binary( true );
+		$ftp->changeDirectory( $options['folder'] );
 
 		$info = $this->backup['destinations']['ftp'];
 
