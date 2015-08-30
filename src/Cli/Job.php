@@ -22,11 +22,14 @@ class Job extends \WP_CLI_Command {
 		list( $id ) = $args;
 
 		declare( ticks = 1 );
-		pcntl_signal( SIGINT, function () {
-			echo 'woops' . "\n";
-			delete_transient( 'my-wp-backup-running' );
-			exit;
-		} );
+
+		if ( function_exists( 'pcntl_signal' ) ) {
+			pcntl_signal( SIGINT, function () {
+				echo 'woops' . "\n";
+				delete_transient( 'my-wp-backup-running' );
+				exit;
+			} );
+		}
 
 		$job = \MyWPBackup\Admin\Job::get_instance();
 		$job->cron_run( array( $id, uniqid(), isset( $assoc['verbose'] ) ) );
