@@ -269,40 +269,31 @@ class Job implements \ArrayAccess {
 		$ftp->changeDirectory( $options['folder'] );
 
 		$root = $options['folder'] . self::UPLOAD_ROOT_FOLDER;
-
-		try {
-			$this->log( __( 'Check if ftp root folder exists...', 'my-wp-backup' ), 'debug' );
-			$ftp->changeDirectory( $root );
-			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-		} catch ( \Exception $e ) {
-			$this->log( __( 'Creating ftp root folder...', 'my-wp-backup' ), 'debug' );
-			$ftp->createDirectory( $root );
-			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-		}
-
 		$basedir = wpb_join_remote_path( $root, $this->uniqid );
+		$folders = array( $root, $basedir );
 
-		// Incase this was an upload retry.
-		try {
-			$ftp->changeDirectory( $basedir );
-		} catch ( \Exception $e ) {
-			$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $basedir ), 'debug' );
-			$ftp->createDirectory( $basedir );
-			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+		foreach ( $folders as $dir ) {
+			try {
+				$ftp->changeDirectory( $dir );
+			} catch ( \Exception $e ) {
+				$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $dir ), 'debug' );
+				$ftp->createDirectory( $dir );
+				$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+			}
 		}
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
 			$remote_filepath = wpb_join_remote_path( $basedir, $basename );
 
-			$this->log( sprintf( __( 'Uploading %s via ftp...', 'my-wp-backup' ), $remote_filepath ), 'debug' );
+			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $remote_filepath ), 'debug' );
 
 			$ftp->put( $remote_filepath, $path );
 			$this->destinations['ftp'][ $basename ] = array(
 				'path' => $remote_filepath,
 			);
 
-			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $basename ), 'debug' );
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
 		$this->log( __( 'Done ftp upload', 'my-wp-backup' ) );
@@ -316,23 +307,25 @@ class Job implements \ArrayAccess {
 		$client = new Client( $options['token'], 'my-wp-backup' );
 
 		$rootdir = '/' . self::UPLOAD_ROOT_FOLDER;
-		if ( ! ( $rootinfo = $client->getMetadata( $rootdir ) ) || ! $rootinfo['is_dir'] ) {
-			$this->log( sprintf( __( 'Creating root folder %s...', 'my-wp-backup' ), $rootdir ), 'debug' );
-			$client->createFolder( $rootdir );
-		}
-
 		$basedir = wpb_join_remote_path( $rootdir, $this->uniqid );
-		if ( ! ( $baseinfo = $client->getMetadata( $basedir ) ) || ! $baseinfo['is_dir'] ) {
-			$this->log( sprintf( __( 'Creating folder %s...', 'my-wp-backup' ), $basedir ), 'debug' );
-			$client->createFolder( $basedir );
+		$folders = array( $rootdir, $basedir );
+
+		foreach ( $folders as $dir ) {
+			if ( ! ( $dirinfo = $client->getMetadata( $dir ) ) || ! $dirinfo['is_dir'] ) {
+				$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $dir ), 'debug' );
+				$client->createFolder( $dir );
+				$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+			}
 		}
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
 			$remote_filepath  = wpb_join_remote_path( $basedir, $basename );
+
+			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $remote_filepath ), 'debug' );
+
 			$fp = fopen( $path, 'r' );
 
-			$this->log( sprintf( __( 'Uploading %s via dropbox...', 'my-wp-backup' ), $basename ), 'debug' );
 			$client->uploadFile( $remote_filepath, WriteMode::add(), $fp );
 			$this->destinations['dropbox'][ $basename ] = array(
 				'path' => $remote_filepath,
@@ -341,6 +334,7 @@ class Job implements \ArrayAccess {
 			if( is_resource( $fp ) ) {
 				fclose( $fp );
 			}
+
 			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $basename ), 'debug' );
 		}
 
@@ -401,10 +395,14 @@ class Job implements \ArrayAccess {
 		$client->setDefer( true );
 
 		foreach ( $this->archive->get_archives() as $path ) {
-
 			$filename = basename( $path );
+			$fp = fopen( $path, 'rb' );
+			$status = false;
+			$size = filesize( $path );
+			$chunkSizeBytes = 120 * 1024 * 1024;
 
-			$this->log( sprintf( __( 'Uploading "%s" via google drive...', 'my-wp-backup' ), $filename ), 'debug' );
+
+			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $filename ), 'debug' );
 
 			$file = new \Google_Service_Drive_DriveFile();
 			$file->setTitle( $filename );
@@ -412,27 +410,14 @@ class Job implements \ArrayAccess {
 
 			/** @var \Google_Http_Request $request */
 			$request = $service->files->insert( $file );
-			$size = filesize( $path );
-			$chunkSizeBytes = 120 * 1024 * 1024;
-
-			$media = new \Google_Http_MediaFileUpload(
-				$client,
-				$request,
-				'',
-				null,
-				true,
-				$chunkSizeBytes
-			);
-
+			$media = new \Google_Http_MediaFileUpload( $client, $request, '', null, true, $chunkSizeBytes );
 			$media->setFileSize( $size );
 
-			$status = false;
-			$handle = fopen( $path, 'rb' );
-			while ( ! $status && ! feof( $handle ) ) {
+			while ( ! $status && ! feof( $fp ) ) {
 				// read until you get $chunkSizeBytes from TESTFILE
 				// fread will never return more than 8192 bytes if the stream is read buffered and it does not represent a plain file
 				// An example of a read buffered file is when reading from a URL
-				$chunk  = wpb_get_file_chunk( $handle, $chunkSizeBytes );
+				$chunk  = wpb_get_file_chunk( $fp, $chunkSizeBytes );
 				$status = $media->nextChunk( $chunk );
 			}
 
@@ -443,9 +428,11 @@ class Job implements \ArrayAccess {
 				);
 			}
 
-			fclose( $handle );
-			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+			if ( is_resource( $fp ) ) {
+				fclose( $fp );
+			}
 
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
 		$this->log( __( 'Done google drive upload.', 'my-wp-backup' ) );
