@@ -796,7 +796,7 @@ class Job implements \ArrayAccess {
 			$remote_filename = $info[ $archive ]['path'];
 			$local_filename = $this->basedir . $archive;
 
-			$this->log( sprintf( __( 'Downloading %s via ftp...', 'my-wp-backup' ), $remote_filename ), 'debug' );
+			$this->log( sprintf( __( 'Downloading %s -> %s...', 'my-wp-backup' ), $remote_filename, $local_filename ), 'debug' );
 			$ftp->get( $local_filename, $remote_filename );
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
@@ -814,13 +814,11 @@ class Job implements \ArrayAccess {
 
 		foreach ( $this->backup['archives'] as $archive ) {
 			$remote_filename = $info[ $archive ]['path'];
-
-			$this->log( sprintf( __( 'Downloading %s via dropbox...', 'my-wp-backup' ), $remote_filename ), 'debug' );
-
 			$local_filename = $this->basedir . $archive;
-			$local = fopen( $local_filename, 'wb' );
 
-			$this->log( sprintf( __( 'Local path: %s', 'my-wp-backup' ), $local_filename ), 'debug' );
+			$this->log( sprintf( __( 'Downloading %s -> %s...', 'my-wp-backup' ), $remote_filename, $local_filename ), 'debug' );
+
+			$local = fopen( $local_filename, 'wb' );
 
 			if ( null === $client->getFile( $remote_filename, $local ) ) {
 				throw new \Exception( sprintf( __( '%s is missing from Dropbox. Select another destination!', 'my-wp-backup' ), $remote_filename ) );
@@ -849,13 +847,11 @@ class Job implements \ArrayAccess {
 
 		foreach ( $this->backup['archives'] as $archive ) {
 			$file = $info['files'][ $archive ];
-
-			$this->log( sprintf( __( 'Downloading %s (%s) via google drive...', 'my-wp-backup' ), $archive, $file['id'] ), 'debug' );
-
 			$local_filename = $this->basedir . $archive;
-			$local = fopen( $local_filename, 'wb' );
 
-			$this->log( sprintf( __( 'Local path: %s', 'my-wp-backup' ), $local_filename ), 'debug' );
+			$this->log( sprintf( __( 'Downloading %s -> %s...', 'my-wp-backup' ), $file['id'], $local_filename ), 'debug' );
+
+			$local = fopen( $local_filename, 'wb' );
 
 			$url = $service->files->get( $file['id'] )->getDownloadUrl();
 
@@ -872,6 +868,7 @@ class Job implements \ArrayAccess {
 			if ( is_resource( $local ) ) {
 				fclose( $local );
 			}
+
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
 		}
 
