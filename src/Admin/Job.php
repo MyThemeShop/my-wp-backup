@@ -35,8 +35,6 @@ class Job {
 			'compression' => 'zip',
 			'schedule_type' => 'manual',
 			'cron_type' => 'simple',
-			'schedule_simple' => 'daily',
-			'schedule_advanced' => '',
 			'backup_files' => '1',
 			'backup_uploads' => '1',
 			'exclude_files' => '1',
@@ -159,16 +157,6 @@ class Job {
 		// Clear schedules if the job was changed from scheduled to manual.
 		if ( 'updated' === $action && 'manual' === $job['schedule_type'] ) {
 			wp_clear_scheduled_hook( 'wp_backup_run_scheduled_job', array( array( $job['id'] ) ) );
-		}
-
-		if ( 'cron' === $job['schedule_type'] ) {
-			if ( false === self::schedule( $job ) ) {
-				$job['schedule_type'] = 'manual';
-				add_settings_error( '', '', __( 'Failed to schedule job (invalid cron pattern?). Changed job scheduling to "manual".', 'my-wp-backup' ) );
-			} else {
-				$next = wp_next_scheduled( 'wp_backup_run_scheduled_job', array( array( $job['id'] ) ) );
-				add_settings_error( '', '', sprintf( __( '%s scheduled to run in %s.', 'my-wp-backup' ), $job['job_name'], human_time_diff( time(), $next ) ), 'updated' );
-			}
 		}
 
 		add_settings_error( '', '', sprintf( __( 'Job "%s" %s.', 'my-wp-backup' ), $job['job_name'], $action ), 'updated' );
@@ -487,26 +475,6 @@ class Job {
 
 	}
 
-	public function cron_scheduled_run( $args ) {
-
-		$job_id = $args[0];
-		$uniqid = uniqid();
-
-		$this->cron_run( array( $job_id, $uniqid ) );
-
-		$job = self::get( $job_id );
-
-		if ( 'advanced' === $job['cron_type'] ) {
-			$pattern = CronExpression::factory( $job['schedule_advanced'] );
-
-			$job->running( $uniqid );
-			$job->log( sprintf( __( 'Rescheduling job to run at %s', 'my-wp-backup' ), $pattern->getNextRunDate()->format( 'c' ) ), 'debug' );
-
-			wp_schedule_single_event( $pattern->getNextRunDate()->getTimestamp(), 'wp_backup_run_scheduled_job', array( $args ) );
-		}
-
-	}
-
 	public function dropbox_token() {
 
 		if ( isset( $_POST['code'] ) ) {
@@ -575,28 +543,18 @@ class Job {
 			$values['differential'] = '1';
 		}
 
-		$schedule_type = sanitize_text_field( $attributes['schedule_type'] );
-		$values['schedule_type'] = isset( $shedule_types[ $schedule_type ] ) ? $shedule_types[ $schedule_type ] : self::$form_defaults['schedule_type'];
+		if ( isset( $attributes['schedule_type'] ) ) {
+			$schedule_type = sanitize_text_field( $attributes['schedule_type'] );
+			if ( isset( $shedule_types[ $schedule_type ] ) ) {
+				$values['schedule_type'] = $shedule_types[ $schedule_type ];
+			}
+		}
 
 		if ( isset( $attributes['cron_type'] )  ) {
 			$cron_type = sanitize_text_field( $attributes['cron_type'] );
 			if ( isset( $cron_types[ $cron_type ] ) ) {
 				$values['cron_type'] = $cron_types[ $cron_type ];
 			}
-		}
-		if ( isset( $attributes['schedule_simple'] ) ) {
-			$simple = sanitize_text_field( $attributes['schedule_simple'] );
-			if ( isset( self::$simple_scheds[ $simple ] ) ) {
-				$values['schedule_simple'] = $simple;
-			}
-
-		}
-		if ( isset( $attributes['schedule_advanced'] ) ) {
-			$advanced = sanitize_text_field( $attributes['schedule_advanced'] );
-			if ( isset( self::$simple_scheds[ $advanced ] ) ) {
-				$values['schedule_advanced'] = $advanced;
-			}
-
 		}
 
 		$values['destination'] = isset( $attributes['destination'] ) ? $attributes['destination'] : array();
@@ -731,7 +689,6 @@ class Job {
 		$jobs = get_site_option( 'my-wp-backup-jobs', array() );
 
 		foreach ( $ids as $id ) {
-			wp_clear_scheduled_hook( 'wp_backup_run_scheduled_job', array( array( $id ) ) );
 			unset( $jobs[ 'job-' . $id ] );
 		}
 
@@ -783,23 +740,6 @@ class Job {
 		iterator_to_array( $files );
 
 		wp_send_json( $excluded );
-	}
-
-	public static function schedule( array $job ) {
-
-		$old = self::get( $job['id'] );
-		$args = array( array( $job['id'] ) );
-
-
-		// Don't reschedule if the schedule was not changed.
-		if ( false !== $old && $old['schedule_simple'] === $job['schedule_simple'] && false !== wp_next_scheduled( 'wp_backup_run_scheduled_job', $args ) ) {
-			return true;
-		}
-
-		wp_clear_scheduled_hook( 'wp_backup_run_scheduled_job', $args );
-
-		return wp_schedule_event( time() + 60, $job['schedule_simple'], 'wp_backup_run_scheduled_job', $args );
-
 	}
 
 	public function get_basedir( $jobid, $uniqid ) {

@@ -79,7 +79,6 @@ class MyWPBackup {
 		}
 
 		add_action( 'wp_backup_run_job', array( Job::get_instance(), 'cron_run' ) );
-		add_action( 'wp_backup_run_scheduled_job', array( Job::get_instance(), 'cron_scheduled_run' ) );
 		add_action( 'wp_backup_restore_backup', array( Backup::get_instance(), 'cron_run' ) );
 
 	}
