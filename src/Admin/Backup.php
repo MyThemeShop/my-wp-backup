@@ -374,7 +374,7 @@ class Backup {
 			$archive->restore();
 
 			if ( $job['volsize'] > 0 ) {
-				unlink( $job->get_basedir() . '/' . reset( $archive->get_archives() ) );
+				unlink( reset( $archive->get_archives() ) );
 			}
 
 			$job->log( __( 'Importing database file...', 'my-wp-backup' ) );
