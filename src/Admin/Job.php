@@ -565,8 +565,8 @@ class Job {
 			$values['exclude_files'] = '1' === $attributes['exclude_files'] ? '1' : '0';
 		}
 		if ( isset( $attributes['file_filters'] ) ) {
-			$values['file_filters'] = array_filter( explode( "\r\n", $attributes['file_filters'] ), function( $filter ) {
-				$filter = str_replace( "\r", '', sanitize_text_field( $filter ) );
+			$values['file_filters'] = array_filter( preg_split("/\r\n|\n|\r/", $attributes['file_filters'] ), function( $filter ) {
+				$filter = sanitize_text_field( $filter );
 				return empty( $filter ) ? false : $filter;
 			});
 		}
@@ -705,7 +705,7 @@ class Job {
 			wp_die();
 		}
 
-		$filters = array_map( 'sanitize_text_field', explode( "\n", $_POST['filters'] ) ); //input var okay;
+		$filters = array_map( 'sanitize_text_field', preg_split("/\r\n|\n|\r/", $_POST['filters'] ) ); //input var okay;
 		$excluded = array();
 
 		/**

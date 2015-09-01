@@ -36,7 +36,7 @@ class Backup implements \ArrayAccess {
 		}
 
 		$file = file_get_contents( $hashfile );
-		$file = explode( "\n", $file );
+		$file = preg_split("/\r\n|\n|\r/", $file );
 
 		foreach ( $file as $line ) {
 			if ( empty( $line ) ) {
