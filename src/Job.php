@@ -587,8 +587,6 @@ class Job implements \ArrayAccess {
 	}
 
 	/**
-	 * @param string $name
-	 *
 	 * @return string
 	 */
 	public function do_filename() {
@@ -648,11 +646,9 @@ class Job implements \ArrayAccess {
 
 		/**
 		 * @param \SplFileInfo $file
-		 * @param mixed $key
-		 * @param \RecursiveCallbackFilterIterator $iterator
 		 * @return bool True if you need to recurse or if the item is acceptable
 		 */
-		$filter = function ($file, $key, $iterator) use ( $excludes, $uploads_dir, $exclude_uploads, $previous_files, &$filtered, &$unchanged, &$overwritten ) {
+		$filter = function ($file) use ( $excludes, $uploads_dir, $exclude_uploads, $previous_files, &$filtered, &$unchanged, &$overwritten ) {
 			$filePath = $file->getPathname();
 			$relativePath = substr( $filePath, strlen( MyWPBackup::$info['root_dir'] ) );
 

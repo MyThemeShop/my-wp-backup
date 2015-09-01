@@ -2,10 +2,11 @@
 
 namespace MyWPBackup;
 
+use MyWPBackup\Database\ExportFile;
+use splitbrain\PHPArchive\Archive as Pharchive;
+use splitbrain\PHPArchive\FileInfo;
 use splitbrain\PHPArchive\Tar;
 use splitbrain\PHPArchive\Zip;
-use splitbrain\PHPArchive\Archive as Pharchive;
-use MyWPBackup\Database\ExportFile;
 
 class Archive {
 
@@ -32,7 +33,6 @@ class Archive {
 	 * @param Job $job
 	 *
 	 * @throws \Exception
-	 * @internal param Backup $backup
 	 *
 	 */
 	public function __construct( Job $job ) {

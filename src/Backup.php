@@ -92,10 +92,6 @@ class Backup implements \ArrayAccess {
 	 */
 	public function offsetGet( $offset ) {
 
-		if ( ! isset( $this->properties[ $offset ] ) ) {
-			throw new \Exception( 'puta!' );
-		}
-
 		return $this->properties[ $offset ];
 
 	}

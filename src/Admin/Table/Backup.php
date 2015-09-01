@@ -3,7 +3,6 @@ namespace MyWPBackup\Admin\Table;
 
 use MyWPBackup\Admin\Admin;
 use MyWPBackup\Admin\Job;
-use MyWPBackup\MyWPBackup;
 
 class Backup extends \WP_List_Table {
 

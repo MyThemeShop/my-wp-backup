@@ -1,16 +1,15 @@
 <?php
 namespace MyWPBackup\Admin;
 
-use Cron\CronExpression;
 use Dropbox\AppInfo;
 use Dropbox\WebAuthNoRedirect;
-use MyWPBackup\RecursiveCallbackFilterIterator;
-use Webmozart\Glob\Glob;
-use Webmozart\PathUtil\Path;
 use MyWPBackup\Archive;
 use MyWPBackup\Database\ExportFile;
 use MyWPBackup\Job as Model;
 use MyWPBackup\MyWPBackup;
+use MyWPBackup\RecursiveCallbackFilterIterator;
+use Webmozart\Glob\Glob;
+use Webmozart\PathUtil\Path;
 
 class Job {
 
@@ -481,7 +480,7 @@ class Job {
 
 			$code = sanitize_text_field( $_POST['code'] ); //input var okay
 
-			list($accesstoken, $userid) = self::get_dropbox_auth()->finish( $code );
+			list($accesstoken) = self::get_dropbox_auth()->finish( $code );
 
 			echo esc_html( $accesstoken );
 			wp_die();
@@ -711,11 +710,9 @@ class Job {
 
 		/**
 		 * @param \SplFileInfo $file
-		 * @param mixed $key
-		 * @param \RecursiveCallbackFilterIterator $iterator
 		 * @return bool True if you need to recurse or if the item is acceptable
 		 */
-		$filter = function ($file, $key, $iterator) use ($filters,&$excluded) {
+		$filter = function ($file) use ($filters,&$excluded) {
 			$filePath = $file->getPathname();
 			$relativePath = substr( $filePath, strlen( MyWPBackup::$info['root_dir'] ) );
 
