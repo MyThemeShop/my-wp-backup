@@ -200,7 +200,7 @@ class Backup {
 	 */
 	public function all() {
 
-		if ( '' === $this->manifest_content ) {
+		if ( ! is_array( $this->manifest_content ) ) {
 			$manifest_file = $this->manifest();
 			$content = '';
 
@@ -210,14 +210,14 @@ class Backup {
 				$content .= $manifest_file->fgets();
 			}
 
-			if ( '' === $content ) {
+			try {
+				$content = json_decode( $content, true );
+			} catch ( \Exception $e ) {
 				$content = array();
-			} else {
-				try {
-					$content = json_decode( $content, true );
-				} catch ( \Exception $e ) {
-					$content = array();
-				}
+			}
+
+			if ( is_null( $content ) ) {
+				$content = array();
 			}
 
 			$this->manifest_content = $content;
