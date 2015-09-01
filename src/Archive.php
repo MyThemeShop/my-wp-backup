@@ -77,7 +77,7 @@ class Archive {
 		}
 
 		$this->password = $job['password'];
-		$this->split_size = '1' === $job['split'] && $job['volsize'] > 0 ? $job['volsize'] * 1024 * 1024 : 0;
+		$this->split_size = $job['volsize'] > 0 ? $job['volsize'] * 1024 * 1024 : 0;
 
 		if ( ! is_null( $this->backup ) ) {
 			$this->archives = $this->backup->get_archives();
@@ -205,7 +205,7 @@ class Archive {
 
 		$this->job->log( __( 'Preparing backup for restore...', 'my-wp-backup' ), 'debug' );
 
-		if ( '1' === $this->job['split'] && count( $this->archives ) > 1 ) {
+		if ( $this->job['volsize'] > 0 && count( $this->archives ) > 1 ) {
 
 			$this->job->log( sprintf( __( 'Joining %d-part archives.', 'my-wp-backup' ), count( $this->archives ) ) );
 

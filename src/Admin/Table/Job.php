@@ -181,7 +181,7 @@ class Job extends \WP_List_Table {
 
 	public function column_volsize( $item ) {
 
-		return '1' === $item['split'] ? $item['volsize'] . ' Mb' : 'None';
+		return $item['volsize'] > 0 ? $item['volsize'] . ' Mb' : 'None';
 
 	}
 

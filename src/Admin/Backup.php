@@ -373,7 +373,7 @@ class Backup {
 			$archive->pre_restore();
 			$archive->restore();
 
-			if ( '1' === $job['split'] ) {
+			if ( $job['volsize'] > 0 ) {
 				unlink( $job->get_basedir() . '/' . reset( $archive->get_archives() ) );
 			}
 

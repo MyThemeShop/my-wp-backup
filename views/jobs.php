@@ -122,11 +122,10 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
                     </tr>-->
                     <tr>
                         <th scope="row">
-                            <label for=" "><?php esc_html_e( 'Split into volumes', 'my-wp-backup' ); ?></label>
+                            <label for="volsize"><?php esc_html_e( 'Split into volumes', 'my-wp-backup' ); ?></label>
                         </th>
                         <td>
-                            <label for="split"><input type="checkbox" name="my-wp-backup-jobs[split]" id="split" value="1" <?php checked( '1', $job['split'], true ); ?>> <?php esc_html_e( 'Split the backup into', 'my-wp-backup' ); ?></label>
-                            <label for="volsize"><input type="number" name="my-wp-backup-jobs[volsize]" id="volsize" style="width:100px" value="<?php echo esc_attr( $job['volsize'] ); ?>"><?php esc_html_e( 'Mb volumes.', 'my-wp-backup' ); ?></label>
+                            <label for="volsize"><?php esc_html_e( 'Split the backup into', 'my-wp-backup' ); ?><input type="number" name="my-wp-backup-jobs[volsize]" id="volsize" style="width:100px" value="<?php echo esc_attr( $job['volsize'] ); ?>"><?php esc_html_e( 'Mb volumes.', 'my-wp-backup' ); ?></label>
 	                        <br>
                             <span class="description"><?php esc_html_e( 'Splitting the backup into smaller volumes specially helps on a slow/unreliable network which might cause failures or interrupt a large data upload.', 'my-wp-backup' ); ?></span>
                         </td>

@@ -29,7 +29,6 @@ class Job {
 			'job_name' => '',
 			'filename' => 'my-wp-backup_%c',
 			'password' => '',
-			'split' => '0',
 			'volsize' => 0,
 			'compression' => 'zip',
 			'schedule_type' => 'manual',
@@ -535,8 +534,13 @@ class Job {
 		}
 
 		$values['password'] = isset( $attributes['password'] ) ? sanitize_text_field( $attributes['password'] ) : '';
-		$values['split'] = isset( $attributes['split'] ) && '1' === $attributes['split'] ? '1' : '0';
-		$values['volsize'] = intval( $attributes['volsize'] );
+
+		if ( isset( $attributes['volsize'] ) ) {
+			$volsize = absint( $attributes['volsize'] );
+			if ( $volsize > 0 ) {
+				$values['volsize'] = $volsize;
+			}
+		}
 
 		if ( isset( $attributes['differential'] ) && '1' === $attributes['differential'] ) {
 			$values['differential'] = '1';
