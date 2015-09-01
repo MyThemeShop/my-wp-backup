@@ -27,9 +27,12 @@ class Activate {
 
 		Admin::get_instance();
 
-		update_site_option( 'my-wp-backup-jobs', array() );
-		update_site_option( 'my-wp-backup-reporter', array() );
-		update_site_option( 'my-wp-backup-options', Admin::$options );
+		if ( ! get_site_option( 'my-wp-backup-jobs', false ) ) {
+			update_site_option( 'my-wp-backup-jobs', array() );
+		}
+		if ( ! get_site_option( 'my-wp-backup-options', false ) ) {
+			update_site_option( 'my-wp-backup-options', Admin::$options );
+		}
 
 		if ( version_compare( PHP_VERSION, self::MIN_VER, '<' ) ) {
 			self::err( sprintf( __( 'Your PHP version must be atleast %s for this plugin to function correctly. You have %s.', 'my-wp-backup' ), self::MIN_VER, PHP_VERSION ) );
