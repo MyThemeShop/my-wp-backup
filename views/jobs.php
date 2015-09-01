@@ -26,8 +26,7 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 	<?php elseif ( isset( $_GET['action'] ) && isset( $_GET['id'] ) && 'view' === $_GET['action'] ) : ?>
 
 		<?php
-		$job_attributes = Job::get( intval( $_GET['id'] ) )->toArray(); // input var okay
-		$job = wpb_array_merge_recursive_distinct( Job::$form_defaults, $job_attributes );
+		$job_attributes = Job::get( intval( $_GET['id'] ) );
 		?>
 
 		<label for="show-verbose"><input type="checkbox" value="yes" id="show-verbose"><?php esc_html_e( 'Verbose Output', 'my-wp-backup' ); ?></label>

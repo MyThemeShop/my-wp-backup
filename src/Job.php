@@ -73,6 +73,8 @@ class Job implements \ArrayAccess {
 			}
 		}
 
+		$this->properties = wpb_array_merge_recursive_distinct( Admin\Job::$form_defaults, $this->properties );
+
 		$this->jobdir = MyWPBackup::$info['backup_dir'] . $this['id'] . '/';
 		$this->files = array(
 			'filtered' => array(),
