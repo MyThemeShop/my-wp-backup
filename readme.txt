@@ -91,6 +91,16 @@ Please disable all plugins and check if backup is working properly. Then you can
 == Changelog ==
 
 = 1.1.1 =
+* Fix: prevent direct access on some files
+* Fix: jobs and settings are now not deleted when the plugin is deactivated
+* Fix: wrong path being deleted when deleting the full archive after restoring a multi-volume backup
+* Fix: check if pcntl_signal is avaiable on wp-cli job command
+* Fix: change method of splitting new line
+* minor improvement on google drive and ftp upload
+* Fix: job options made compatible for upgrading to the pro version
+* Fix: jobs and settings being reverted to default when re-activating the plugin
+* Removed: unnecessary languages/default.mo file
+* Fix: job fails on DB_HOST with custom port specified
 
 = 1.1 =
 * Added Compatibility with PHP v5.3.3
