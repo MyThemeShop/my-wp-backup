@@ -34,8 +34,8 @@ class Job implements \ArrayAccess {
 	/** @var  Archive */
 	private $archive;
 
-	public $start;
-	public $end;
+	public $start = null;
+	public $end = null;
 
 	private $destinations = array();
 
@@ -896,6 +896,14 @@ class Job implements \ArrayAccess {
 
 		return $this->db;
 
+	}
+
+	public function __destruct() {
+		if ( null !== $this->start && null === $this->end ) {
+			$this->log( __( 'Cleanly exiting...', 'my-wp-backup' ), 'debug' );
+			Admin\Backup::get_instance()->delete( $this['id'], $this->uniqid );
+			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+		}
 	}
 
 }
