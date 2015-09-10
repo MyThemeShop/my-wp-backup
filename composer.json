@@ -12,7 +12,6 @@
     "webmozart/glob": "^2.0@dev",
     "mtdowling/cron-expression": "dev-master",
     "splitbrain/php-archive": "dev-master",
-    "dropbox/dropbox-sdk": "dev-master",
     "melihucar/ftpclient": "dev-master",
     "guzzlehttp/guzzle": "3.8.1"
   },

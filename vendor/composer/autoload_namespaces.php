@@ -10,6 +10,5 @@ return array(
     'Melihucar' => array($vendorDir . '/melihucar/ftpclient/src'),
     'Guzzle\\Tests' => array($vendorDir . '/guzzlehttp/guzzle/tests'),
     'Guzzle' => array($vendorDir . '/guzzlehttp/guzzle/src'),
-    'Dropbox' => array($vendorDir . '/dropbox/dropbox-sdk/lib'),
     'Cron' => array($vendorDir . '/mtdowling/cron-expression/src'),
 );

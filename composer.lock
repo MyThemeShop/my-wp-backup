@@ -1,50 +1,11 @@
 {
     "_readme": [
         "This file locks the dependencies of your project to a known state",
-        "Read more about it at http://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
+        "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "0155f0f94e1a7d9270f3272f95a93922",
+    "hash": "2ab9c78e568037bd46cf00e967a77406",
     "packages": [
-        {
-            "name": "dropbox/dropbox-sdk",
-            "version": "dev-master",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/dropbox/dropbox-sdk-php.git",
-                "reference": "868e337f3999c9f3779111957591fb4850426ee4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/dropbox/dropbox-sdk-php/zipball/868e337f3999c9f3779111957591fb4850426ee4",
-                "reference": "868e337f3999c9f3779111957591fb4850426ee4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-curl": "*",
-                "php": ">= 5.3"
-            },
-            "require-dev": {
-                "apigen/apigen": "2.8.2",
-                "phpunit/phpunit": "~4.0",
-                "squizlabs/php_codesniffer": "2.0.0RC3"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-0": {
-                    "Dropbox": "lib/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Dropbox SDK for PHP",
-            "keywords": [
-                "dropbox"
-            ],
-            "time": "2015-06-29 22:05:10"
-        },
         {
             "name": "google/apiclient",
             "version": "dev-master",
@@ -409,7 +370,7 @@
                     "Symfony\\Component\\EventDispatcher\\": ""
                 }
             },
-            "notification-url": "http://packagist.org/downloads/",
+            "notification-url": "https://packagist.org/downloads/",
             "license": [
                 "MIT"
             ],
@@ -577,7 +538,6 @@
         "webmozart/glob": 20,
         "mtdowling/cron-expression": 20,
         "splitbrain/php-archive": 20,
-        "dropbox/dropbox-sdk": 20,
         "melihucar/ftpclient": 20,
         "wp-cli/wp-cli": 20
     },

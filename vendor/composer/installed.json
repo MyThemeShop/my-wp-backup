@@ -286,47 +286,6 @@
         "description": "A robust cross-platform utility for normalizing, comparing and modifying file paths."
     },
     {
-        "name": "dropbox/dropbox-sdk",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/dropbox/dropbox-sdk-php.git",
-            "reference": "868e337f3999c9f3779111957591fb4850426ee4"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/dropbox/dropbox-sdk-php/zipball/868e337f3999c9f3779111957591fb4850426ee4",
-            "reference": "868e337f3999c9f3779111957591fb4850426ee4",
-            "shasum": ""
-        },
-        "require": {
-            "ext-curl": "*",
-            "php": ">= 5.3"
-        },
-        "require-dev": {
-            "apigen/apigen": "2.8.2",
-            "phpunit/phpunit": "~4.0",
-            "squizlabs/php_codesniffer": "2.0.0RC3"
-        },
-        "time": "2015-06-29 22:05:10",
-        "type": "library",
-        "installation-source": "dist",
-        "autoload": {
-            "psr-0": {
-                "Dropbox": "lib/"
-            }
-        },
-        "notification-url": "https://packagist.org/downloads/",
-        "license": [
-            "MIT"
-        ],
-        "description": "Dropbox SDK for PHP",
-        "keywords": [
-            "dropbox"
-        ]
-    },
-    {
         "name": "swiftmailer/swiftmailer",
         "version": "v5.4.1",
         "version_normalized": "5.4.1.0",
@@ -565,7 +524,7 @@
                 "Symfony\\Component\\EventDispatcher\\": ""
             }
         },
-        "notification-url": "http://packagist.org/downloads/",
+        "notification-url": "https://packagist.org/downloads/",
         "license": [
             "MIT"
         ],
