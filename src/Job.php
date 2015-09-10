@@ -899,7 +899,7 @@ class Job implements \ArrayAccess {
 	}
 
 	public function __destruct() {
-		if ( null !== $this->start && null === $this->end ) {
+		if ( null !== $this->backup && null !== $this->start && null === $this->end ) {
 			$this->log( __( 'Cleanly exiting...', 'my-wp-backup' ), 'debug' );
 			Admin\Backup::get_instance()->delete( $this['id'], $this->uniqid );
 			$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
