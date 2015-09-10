@@ -5,6 +5,7 @@ namespace MyWPBackup;
 use Dropbox\Client;
 use Dropbox\WriteMode;
 use Melihucar\FtpClient\FtpClient;
+use MyWPBackup\Dest\Dropbox;
 use Webmozart\Glob\Glob;
 use Webmozart\PathUtil\Path;
 
@@ -306,36 +307,21 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Uploading backup via dropbox', 'my-wp-backup' ) );
 
-		$client = new Client( $options['token'], 'my-wp-backup' );
+		$client = new Dropbox( $options['token'], 'my-wp-backup' );
 
 		$rootdir = '/' . self::UPLOAD_ROOT_FOLDER;
 		$basedir = wpb_join_remote_path( $rootdir, $this->uniqid );
-		$folders = array( $rootdir, $basedir );
-
-		foreach ( $folders as $dir ) {
-			if ( ! ( $dirinfo = $client->getMetadata( $dir ) ) || ! $dirinfo['is_dir'] ) {
-				$this->log( sprintf( __( 'Creating directory %s...', 'my-wp-backup' ), $dir ), 'debug' );
-				$client->createFolder( $dir );
-				$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-			}
-		}
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
-			$remote_filepath  = wpb_join_remote_path( $basedir, $basename );
+			$remote_filepath  = wpb_join_remote_path( $basedir, urlencode( $basename ) );
 
 			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $remote_filepath ), 'debug' );
 
-			$fp = fopen( $path, 'r' );
-
-			$client->uploadFile( $remote_filepath, WriteMode::add(), $fp );
+			$client->upload( $path, $remote_filepath );
 			$this->destinations['dropbox'][ $basename ] = array(
 				'path' => $remote_filepath,
 			);
-
-			if( is_resource( $fp ) ) {
-				fclose( $fp );
-			}
 
 			$this->log( sprintf( __( 'Ok.', 'my-wp-backup' ), $basename ), 'debug' );
 		}
@@ -807,7 +793,7 @@ class Job implements \ArrayAccess {
 
 		$this->log( __( 'Downloading backup via dropbox', 'my-wp-backup' ) );
 
-		$client = new Client( $options['token'], 'my-wp-backup' );
+		$client = new Dropbox( $options['token'], 'my-wp-backup' );
 		$info = $this->backup['destinations']['dropbox'];
 
 		foreach ( $this->backup['archives'] as $archive ) {
@@ -818,7 +804,7 @@ class Job implements \ArrayAccess {
 
 			$local = fopen( $local_filename, 'wb' );
 
-			if ( null === $client->getFile( $remote_filename, $local ) ) {
+			if ( ! $client->download( $remote_filename, $local ) ) {
 				throw new \Exception( sprintf( __( '%s is missing from Dropbox. Select another destination!', 'my-wp-backup' ), $remote_filename ) );
 			}
 

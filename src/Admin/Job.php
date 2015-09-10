@@ -1,10 +1,9 @@
 <?php
 namespace MyWPBackup\Admin;
 
-use Dropbox\AppInfo;
-use Dropbox\WebAuthNoRedirect;
 use MyWPBackup\Archive;
 use MyWPBackup\Database\ExportFile;
+use MyWPBackup\Dest\DropboxClientAuth;
 use MyWPBackup\Job as Model;
 use MyWPBackup\MyWPBackup;
 use MyWPBackup\RecursiveCallbackFilterIterator;
@@ -240,7 +239,7 @@ class Job {
 			add_thickbox();
 			wp_enqueue_script( 'my-wp-backup-newjob', MyWPBackup::$info['baseDirUrl'] . 'js/new-job.js', array( 'jquery', 'my-wp-backup-nav-tab', 'my-wp-backup-select-section' ), null, true );
 			wp_localize_script( 'my-wp-backup-newjob', 'MyWPBackupAuthUrl', array(
-				'dropbox' => self::get_dropbox_auth()->start(),
+				'dropbox' => self::get_dropbox_auth()->get_authorize_url(),
 				'drive' => self::get_drive_client()->createAuthUrl(),
 			));
 			wp_localize_script( 'my-wp-backup-newjob', 'fileFilter', array(
@@ -321,14 +320,13 @@ class Job {
 	}
 
 	/**
-	 * @return WebAuthNoRedirect
+	 * @return Dropbox
 	 */
 	public static function get_dropbox_auth() {
 
-		$appinfo = new AppInfo( base64_decode( 'dmVrMGw2ZGJ6d3gyeDh1' ), base64_decode( 'cHRicDhxdjh2Ymw4ajNx' ) );
-		$webauth = new WebAuthNoRedirect( $appinfo, 'my-wp-backup' );
+		$appinfo = new DropboxClientAuth( base64_decode( 'dmVrMGw2ZGJ6d3gyeDh1' ), base64_decode( 'cHRicDhxdjh2Ymw4ajNx' ) );
 
-		return $webauth;
+		return $appinfo;
 
 	}
 
@@ -475,13 +473,9 @@ class Job {
 
 	public function dropbox_token() {
 
-		if ( isset( $_POST['code'] ) ) {
-
-			$code = sanitize_text_field( $_POST['code'] ); //input var okay
-
-			list($accesstoken) = self::get_dropbox_auth()->finish( $code );
-
-			echo esc_html( $accesstoken );
+		if ( $code = filter_input( INPUT_POST, 'code', FILTER_SANITIZE_STRING ) ) {
+			$res = self::get_dropbox_auth()->authorize( $code );
+			echo esc_html( $res['access_token'] );
 			wp_die();
 		}
 	}
