@@ -58,6 +58,16 @@ class Admin {
 
 		add_action( 'admin_post_MyWPBackup_settings', array( $this, 'post_settings' ) );
 		add_action( 'admin_post_MyWPBackup_import', array( $this, 'post_import' ) );
+		add_action( is_multisite() ? 'network_admin_notices' : 'admin_notices', array( $this, 'admin_notice' ) );
+
+		global $current_user;
+		$user_id = $current_user->ID;
+
+		if ( ( is_multisite() && is_network_admin() ) || ( !is_multisite() && current_user_can( 'manage_options' ) ) ) {
+			if ( '1' === filter_input( INPUT_GET, 'mwpb_notice_close', FILTER_SANITIZE_NUMBER_INT ) ) {
+				add_user_meta( $user_id, 'mwpb-notice-1', 'true', true );
+			}
+		}
 
 		Job::get_instance();
 		Backup::get_instance();
@@ -385,6 +395,23 @@ class Admin {
 
 		return true;
 
+	}
+
+	public function admin_notice() {
+		global $current_user;
+
+		$screen = get_current_screen();
+		$user_id = $current_user->ID;
+
+		$closable = 'my-wp-backup' !== $screen->parent_base;
+
+		if ( ( is_multisite() && is_network_admin() ) || ( !is_multisite() && current_user_can( 'manage_options' ) ) ) {
+			if ( 'true' !== get_user_meta( $user_id, 'mwpb-notice-1', true ) || ! $closable ) {
+				echo '<div class="updated notice-info my-wp-backup-notice" id="mywpb-notice" style="position:relative;">';
+				printf(__('<p>Liked My WP Backup plugin? You will definitely love the ​<strong>Pro</strong> version. <a href="https://mythemeshop.com/plugins/my-wp-backup-pro/?utm_source=My+WP+Backup&utm_medium=Notification+Link&utm_content=My+WP+Backup+Pro+LP&utm_campaign=WordPressOrg" target="_blank" class="notice-button"><strong>Get it now</strong>!</a></p>' . ( $closable ? '<a class="notice-dismiss" href="%1$s"></a>' : '' )), '?mwpb_notice_close=1');
+				echo "</div>";
+			}
+		}
 	}
 
 }
