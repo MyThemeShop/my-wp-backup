@@ -518,7 +518,7 @@
                 "dev-master": "2.6-dev"
             }
         },
-        "installation-source": "source",
+        "installation-source": "dist",
         "autoload": {
             "psr-0": {
                 "Symfony\\Component\\EventDispatcher\\": ""
