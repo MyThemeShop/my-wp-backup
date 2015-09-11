@@ -34,7 +34,7 @@ class Admin {
 			'time_limit' => 86400,
 			'backup_dir' => 'my-wp-backup',
 			'upload_retries' => 3,
-			'upload_part' => min( 209715200, return_bytes( ini_get( 'memory_limit' ) ) / 2 ),
+			'upload_part' => wpb_return_bytes( ini_get( 'memory_limit' ) ) * .75,
 		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );
@@ -228,6 +228,9 @@ class Admin {
 					<dt>Max Upload Retries</dt>
 					<dd>Retry uploading the backup a number of times if it fails before skipping. <br>Default: 3 retries</dd>
 
+					<dt>Upload Chunk Size</dt>
+					<dd>Size of each chunk when uploading to destinations that support chunk uploading. <br>Default: 75% of your PHP memory limit</dd>
+
 					<dt>Backup Dir</dt>
 					<dd>Directory in the uploads directory to store backups into. <br>Default: my-wp-backup</dd>
 				</dl>
@@ -260,6 +263,10 @@ class Admin {
 
 		if ( ! empty( $_POST['my-wp-backup-setting']['backup_dir'] ) ) {
 			$values['backup_dir'] = sanitize_text_field( $_POST['my-wp-backup-setting']['backup_dir'] );
+		}
+
+		if ( ! empty( $_POST['my-wp-backup-setting']['upload_part'] ) ) {
+			$values['upload_part'] = min( absint( $_POST['my-wp-backup-setting']['upload_part'] ), wpb_return_bytes( ini_get( 'memory_limit' ) ) * .75 );
 		}
 
 		if ( get_site_option( 'my-wp-backup-options', self::$options ) != $values && ! update_site_option( 'my-wp-backup-options', $values ) ) {
