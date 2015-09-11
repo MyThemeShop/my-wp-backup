@@ -30,6 +30,7 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 		?>
 
 		<label for="show-verbose"><input type="checkbox" value="yes" id="show-verbose"><?php esc_html_e( 'Verbose Output', 'my-wp-backup' ); ?></label>
+		<div class="spinner is-active"></div>
 		<pre id="backup-progress" class="terminal"><code><?php esc_html_e( 'Please wait...', 'my-wp-backup' ); ?></code></pre>
 
 	<?php elseif ( isset( $_GET['action'] ) && isset( $_GET['id'] ) && 'delete' === $_GET['action'] ) : ?>
