@@ -2,8 +2,6 @@
 
 namespace MyWPBackup;
 
-use Dropbox\Client;
-use Dropbox\WriteMode;
 use Melihucar\FtpClient\FtpClient;
 use MyWPBackup\Dest\Dropbox;
 use Webmozart\Glob\Glob;
