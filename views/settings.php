@@ -23,20 +23,18 @@
 					<th scope="row"><label for="time-limit"><?php esc_html_e( 'Time Limit', 'my-wp-backup' ); ?></label></th>
 					<td>
 						<input name="my-wp-backup-setting[time_limit]" id="time-limit" type="number" value="<?php echo esc_attr( $options['time_limit'] ); ?>"/><br/>
-						<span class="description"><?php esc_html_e( 'Duration in seconds a job is allowed to run before it gets terminated', 'my-wp-backup' ); ?> (<?php esc_html_e( 'set to 0 to disable', 'my-wp-backup' ); ?>).</span>
 					</td>
 				</tr>
 				<tr>
 					<th scope="row"><label for="upload-retries"><?php esc_html_e( 'Max Upload Retries', 'my-wp-backup' ); ?></label></th>
 					<td>
 						<input type="number" name="my-wp-backup-setting[upload_retries]" id="upload-retries" value="<?php echo esc_attr( $options['upload_retries'] ); ?>"><br>
-						<span class="description"><?php esc_html_e( 'Retry uploading the backup a number of times if it fails before skipping.', 'my-wp-backup' ); ?></span>
 					</td>
 				</tr>
 				<tr>
-					<th scope="row"><label for="upload-part"><?php esc_html_e( 'Upload Size', 'my-wp-backup' ); ?></label></th>
+					<th scope="row"><label for="upload-part"><?php esc_html_e( 'Upload Chunk Size', 'my-wp-backup' ); ?></label></th>
 					<td>
-						<label for="upload-part"><?php printf( __( 'Upload %sbytes at a time.', 'my-wp-backup' ), '<input type="number" value="' . esc_attr( $options['upload_part'] ) . '">' ); ?></label>
+						<label for="upload-part"><?php printf( __( 'Upload %sbytes at a time.', 'my-wp-backup' ), '<input type="number" name="my-wp-backup-setting[upload_part]" value="' . esc_attr( $options['upload_part'] ) . '">' ); ?></label><br>
 					</td>
 				</tr>
 			</table>
