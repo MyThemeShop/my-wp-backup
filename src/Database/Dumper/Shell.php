@@ -23,7 +23,6 @@ class Shell extends Dumper {
 			$command .= ' | gzip';
 		}
 		$command .= ' > ' . escapeshellarg( $export_file_location );
-		error_log( $command );
 		exec( $command, $output, $return_val );
 		if ( 0 !== $return_val ) {
 			$error_text = file_get_contents( $error_file );
