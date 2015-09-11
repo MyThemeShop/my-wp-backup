@@ -35,14 +35,14 @@ class Activate {
 		}
 
 		if ( version_compare( PHP_VERSION, self::MIN_VER, '<' ) ) {
-			self::err( sprintf( __( 'Your PHP version must be atleast %s for this plugin to function correctly. You have %s.', 'my-wp-backup' ), self::MIN_VER, PHP_VERSION ) );
+			self::err( sprintf( __( 'PHP\'s version is too old. You have %s but My WP Backup requires atleast %s.', 'my-wp-backup' ), PHP_VERSION, self::MIN_VER ) );
 		}
 
 		$extensions = array( 'zlib', 'bz2', 'SPL', 'curl', 'mbstring', 'ftp' );
 
 		foreach ( $extensions as $extension ) {
 			if ( ! extension_loaded( $extension ) ) {
-				self::err( sprintf( __( 'This plugin requires the %s PHP extension to function correctly.', 'my-wp-backup' ), $extension ) );
+				self::err( sprintf( __( 'Error: Your PHP installation does not have the %s extension which is required for this plugin to function correctly.', 'my-wp-backup' ), $extension ) );
 			}
 		}
 
