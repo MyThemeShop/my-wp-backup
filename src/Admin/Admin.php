@@ -34,6 +34,7 @@ class Admin {
 			'time_limit' => 86400,
 			'backup_dir' => 'my-wp-backup',
 			'upload_retries' => 3,
+			'upload_part' => min( 209715200, return_bytes( ini_get( 'memory_limit' ) ) / 2 ),
 		);
 
 		add_action( 'admin_enqueue_scripts', array( $this, 'enqueue_styles' ) );

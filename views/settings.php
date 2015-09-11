@@ -33,6 +33,12 @@
 						<span class="description"><?php esc_html_e( 'Retry uploading the backup a number of times if it fails before skipping.', 'my-wp-backup' ); ?></span>
 					</td>
 				</tr>
+				<tr>
+					<th scope="row"><label for="upload-part"><?php esc_html_e( 'Upload Size', 'my-wp-backup' ); ?></label></th>
+					<td>
+						<label for="upload-part"><?php printf( __( 'Upload %sMb at a time.', 'my-wp-backup' ), '<input type="number" value="' . esc_attr( $options['upload_part'] ) . '">' ); ?></label>
+					</td>
+				</tr>
 			</table>
 			<h3>Backup</h3>
 			<table class="form-table">

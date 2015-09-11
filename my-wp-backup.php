@@ -29,6 +29,8 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
  */
 class MyWPBackup {
 
+	const KEY_VERSION = 'my-wp-backup-version';
+
 	/**
 	 * An associative array where the key is a namespace prefix and the value
 	 * is an array of base directories for classes in that namespace.
@@ -81,6 +83,12 @@ class MyWPBackup {
 		add_action( 'wp_backup_run_job', array( Job::get_instance(), 'cron_run' ) );
 		add_action( 'wp_backup_restore_backup', array( Backup::get_instance(), 'cron_run' ) );
 
+		$version = get_site_option( self::KEY_VERSION );
+		if ( ! $version || self::$info['version'] !== $version ) {
+			if ( $this->update_options() ) {
+				update_site_option( self::KEY_VERSION, self::$info['version'] );
+			}
+		}
 	}
 
 	public static function get_instance() {
@@ -91,6 +99,21 @@ class MyWPBackup {
 
 		return self::$instance;
 
+	}
+
+	private function update_options() {
+		$current = get_site_option( 'my-wp-backup-options', array() );
+		$new = Admin::$options;
+		$changed = false;
+
+		foreach ( $new as $key => $value ) {
+			if ( ! isset( $current[ $key ] ) ) {
+				$current[ $key ] = $value;
+				$changed = true;
+			}
+		}
+
+		return $changed ? update_site_option( 'my-wp-backup-options', $current ) : true;
 	}
 }
 
