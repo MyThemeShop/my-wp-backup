@@ -38,10 +38,6 @@ class Activate {
 			self::err( sprintf( __( 'Your PHP version must be atleast %s for this plugin to function correctly. You have %s.', 'my-wp-backup' ), self::MIN_VER, PHP_VERSION ) );
 		}
 
-		if ( strlen( (string) PHP_INT_MAX ) < 19 ) {
-			self::err( __( 'This plugin requires the 64-bit version of PHP to function correctly.', 'my-wp-backup' ) );
-		}
-
 		$extensions = array( 'zlib', 'bz2', 'SPL', 'curl', 'mbstring', 'ftp' );
 
 		foreach ( $extensions as $extension ) {
