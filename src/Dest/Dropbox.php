@@ -5,12 +5,10 @@ use Guzzle\Http\Client;
 use Guzzle\Http\EntityBody;
 use Guzzle\Http\Exception\BadResponseException;
 use Guzzle\Iterator\ChunkedIterator;
-use Jstewmc\Chunker\File;
 
 class Dropbox {
 
 	const DROPBOX_CONTENT_BASE_URL = 'https://content.dropboxapi.com/1/';
-	const DROPBOX_API_BASE_URL = 'https://api.dropboxapi.com/1/';
 
 	/** @var Client */
 	private $client;
@@ -56,7 +54,14 @@ class Dropbox {
 			'overwrite' => 'true',
 		) );
 
-		return $req->send()->json();
+		try {
+			return $req->send()->json();
+		} catch ( BadResponseException $e ) {
+			$body = $e->getResponse()->getBody( true );
+			error_log( $e->getRequest()->getRawHeaders() );
+			error_log( $body );
+			throw new \Exception( $body );
+		}
 	}
 
 	public function download( $path, $destination ) {
