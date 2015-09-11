@@ -63,7 +63,7 @@ function wpb_join_remote_path( $args ) {
  *
  * @return int
  */
-function return_bytes( $val ) {
+function wpb_return_bytes( $val ) {
 	$val  = trim( $val );
 	$last = strtolower( $val[ strlen( $val ) - 1 ] );
 	switch ( $last ) {
