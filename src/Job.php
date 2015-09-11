@@ -236,7 +236,7 @@ class Job implements \ArrayAccess {
 							$this->log( __( 'Retrying upload.', 'my-wp-backup' ) );
 						}
 						$this->destinations[ $destination ] = array();
-						call_user_func( array( $this, 'upload_' . $destination ), $options );
+						call_user_func( array( $this, 'upload_' . $destination ), $options, $settings );
 						$failed = false;
 					} catch ( \Exception $e ) {
 						unset( $this->destinations[ $destination ] );
@@ -301,7 +301,7 @@ class Job implements \ArrayAccess {
 
 	}
 
-	public function upload_dropbox( $options ) {
+	public function upload_dropbox( $options, $settings ) {
 
 		$this->log( __( 'Uploading backup via dropbox', 'my-wp-backup' ) );
 
@@ -309,6 +309,7 @@ class Job implements \ArrayAccess {
 
 		$rootdir = '/' . self::UPLOAD_ROOT_FOLDER;
 		$basedir = wpb_join_remote_path( $rootdir, $this->uniqid );
+		$chunk_size = $settings['upload_part'];
 
 		foreach ( $this->archive->get_archives() as $path ) {
 			$basename = basename( $path );
@@ -316,7 +317,7 @@ class Job implements \ArrayAccess {
 
 			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $remote_filepath ), 'debug' );
 
-			$client->upload( $path, $remote_filepath );
+			$client->upload( $path, $remote_filepath, $chunk_size );
 			$this->destinations['dropbox'][ $basename ] = array(
 				'path' => $remote_filepath,
 			);
@@ -328,7 +329,7 @@ class Job implements \ArrayAccess {
 
 	}
 
-	public function upload_googledrive( $options ) {
+	public function upload_googledrive( $options, $settings ) {
 
 		$this->log( __( 'Uploading backup via google drive', 'my-wp-backup' ) );
 
@@ -385,7 +386,7 @@ class Job implements \ArrayAccess {
 			$fp = fopen( $path, 'rb' );
 			$status = false;
 			$size = filesize( $path );
-			$chunkSizeBytes = 120 * 1024 * 1024;
+			$chunkSizeBytes = $settings['upload_part'];
 
 
 			$this->log( sprintf( __( 'Uploading %s -> %s...', 'my-wp-backup' ), $path, $filename ), 'debug' );

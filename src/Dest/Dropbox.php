@@ -23,13 +23,12 @@ class Dropbox {
 		) );
 	}
 
-	public function upload( $file, $remote_path ) {
+	public function upload( $file, $remote_path, $chunk_size ) {
 		if ( ! file_exists( $file ) || ! is_readable( $file ) || ( ! ( $fp = fopen( $file, 'rb' ) )) ) {
 			throw new \Exception( sprintf( __( 'The file %s does not seem to exist or is not readable.', 'my-wp-backup' ), $file ) );
 		}
 
 		$upload_id = null;
-		$chunk_size = 125829120;
 
 		while ( ! feof( $fp ) ) {
 			try {
