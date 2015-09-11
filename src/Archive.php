@@ -45,28 +45,28 @@ class Archive {
 			case 'zip':
 
 				$this->extension = 'zip';
-				$this->format = \Phar::ZIP;
+				$this->format = 'zip';
 				$this->compression = Pharchive::COMPRESS_NONE;
 				break;
 
 			case 'tar':
 
 				$this->extension = 'tar';
-				$this->format = \Phar::TAR;
+				$this->format = 'tar';
 				$this->compression = Pharchive::COMPRESS_NONE;
 				break;
 
 			case 'gz':
 
 				$this->extension = 'tar.gz';
-				$this->format = \Phar::TAR;
+				$this->format = 'tar';
 				$this->compression = Pharchive::COMPRESS_GZIP;
 				break;
 
 			case 'bz2':
 
 				$this->extension = 'tar.bz2';
-				$this->format = \Phar::TAR;
+				$this->format = 'tar';
 				$this->compression = Pharchive::COMPRESS_BZIP;
 				break;
 
@@ -95,7 +95,7 @@ class Archive {
 
 		$archive_name = $this->job->get_filename() . '.' . $this->extension;
 
-		if ( \Phar::ZIP === $this->format ) {
+		if ( 'zip' === $this->format ) {
 			$archive = new Zip();
 			$archive->create( $archive_name );
 		} else {
@@ -248,7 +248,7 @@ class Archive {
 
 			$this->job->log( sprintf( __( 'Extracting %s', 'my-wp-backup' ), $path ) );
 
-			if ( \Phar::ZIP === $this->format ) {
+			if ( 'zip' === $this->format ) {
 				$archive = new Zip();
 			} else {
 				$archive = new Tar();
@@ -280,7 +280,7 @@ class Archive {
 
 		$this->job->log( __( 'Getting checksum file from archive...', 'my-wp-backup' ), 'debug' );
 
-		if ( \Phar::ZIP === $this->format ) {
+		if ( 'zip' === $this->format ) {
 			$archive = new Zip();
 		} else {
 			$archive = new Tar();
@@ -337,7 +337,7 @@ class Archive {
 
 	public function is_compressed() {
 
-		return \Phar::TAR === $this->format && Pharchive::COMPRESS_NONE !== $this->compression;
+		return 'tar' === $this->format && Pharchive::COMPRESS_NONE !== $this->compression;
 
 	}
 
