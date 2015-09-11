@@ -36,7 +36,7 @@
 				<tr>
 					<th scope="row"><label for="upload-part"><?php esc_html_e( 'Upload Size', 'my-wp-backup' ); ?></label></th>
 					<td>
-						<label for="upload-part"><?php printf( __( 'Upload %sMb at a time.', 'my-wp-backup' ), '<input type="number" value="' . esc_attr( $options['upload_part'] ) . '">' ); ?></label>
+						<label for="upload-part"><?php printf( __( 'Upload %sbytes at a time.', 'my-wp-backup' ), '<input type="number" value="' . esc_attr( $options['upload_part'] ) . '">' ); ?></label>
 					</td>
 				</tr>
 			</table>
