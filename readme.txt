@@ -4,7 +4,7 @@ Creator's website link: http://mythemeshop.com/plugins/my-wp-backup/
 Tags: backup, backups, restore, dropbox backup, google drive backup, ftp backup, back up, multisite backup, restoration, sftp backup, migrate, mysql backup, database backup, db backups, website backup, wordpress backup, full backup
 Requires at least: 3.0.1
 Tested up to: 4.3
-Stable tag: 1.1.2
+Stable tag: 1.2.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,14 @@ Please disable all plugins and check if backup is working properly. Then you can
 9. Backup Log
 
 == Changelog ==
+
+= 1.2.0 =
+* Fix: Completely remove Phar class usage
+* Fix: Remove 64bit PHP requirement
+* Fix: Cleanup created backup directory if the backup job failes
+* Fix: chunked upload size might exceed the memory limit
+* New: setting "Upload Size" to change the size of each chunk when chunk uploading
+* Minor improvements and optimizations
 
 = 1.1.2 =
 * Fix: Backup gets accidentally deleted when restoration fails.
