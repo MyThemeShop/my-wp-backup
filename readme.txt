@@ -93,7 +93,7 @@ Please disable all plugins and check if backup is working properly. Then you can
 = 1.2.0 =
 * Fix: Completely remove Phar class usage
 * Fix: Remove 64bit PHP requirement
-* Fix: Cleanup created backup directory if the backup job failes
+* Fix: Cleanup created backup directory if the backup job fails
 * Fix: chunked upload size might exceed the memory limit
 * New: setting "Upload Size" to change the size of each chunk when chunk uploading
 * Minor improvements and optimizations
