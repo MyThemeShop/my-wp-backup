@@ -45,6 +45,7 @@ class Job {
 			'exclude_tables' => '0',
 			'table_filters' => array(),
 			'differential' => '0',
+			'delete_local' => '0',
 			'destination' => array(),
 			'destination_options' => array(
 				'ftp' => array(
@@ -579,6 +580,9 @@ class Job {
 					return in_array( $filter, $tables ) ? $filter : false;
 				} );
 			}
+		}
+		if ( isset( $attributes['delete_local'] ) ) {
+			$values['delete_local'] = '1' === $attributes['delete_local'] ? '1' : '0';
 		}
 		if ( isset( $attributes['destination_options'] ) && is_array( $attributes['destination_options'] ) ) {
 			foreach ( $attributes['destination_options'] as $destination => $options ) {

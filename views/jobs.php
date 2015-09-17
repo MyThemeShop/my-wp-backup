@@ -207,6 +207,14 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
                 <table class="form-table">
                     <tbody>
                     <tr>
+	                    <th scope="row"><label for="dest-local"><?php esc_html_e( 'Local Copy', 'my-wp-backup' ); ?></label></th>
+	                    <td>
+		                    <input type="checkbox" id="dest-local" value="1" name="my-wp-backup-jobs[delete_local]" <?php checked( '1', $job['delete_local'], true ); ?>>
+		                    <label for="dest-local"><?php esc_html_e( 'Delete the local copy of the archive when upload completes.', 'my-wp-backup' ); ?></label><br>
+		                    <span class="description"><?php esc_html_e( 'You need to select atleast 1 destination below for this option to work.', 'my-wp-backup' ); ?></span>
+	                    </td>
+                    </tr>
+                    <tr>
                         <th scope="row">
                             <label for="destination"><?php esc_html_e( 'Backup Destination(Optional)', 'my-wp-backup' ); ?></label>
 	                        <p class="description" style="font-weight:normal"><?php esc_html_e( 'If you want to save the backup on the same server then, you don\'t need to choose any listed service.', 'my-wp-backup' ); ?></p>

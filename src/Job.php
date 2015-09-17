@@ -158,6 +158,19 @@ class Job implements \ArrayAccess {
 			/** @var \SPLFileObject $fp */
 			$backup = Admin\Backup::get_instance();
 			$backup->add( $item );
+
+			if ( '1' === $this['delete_local'] && ! empty( $this['destination'] ) ) {
+				$this->log( __( 'Deleting archives from local folder', 'my-wp-backup' ) );
+
+				foreach ( $this->archive->get_archives() as $filepath ) {
+					$this->log( sprintf( __( 'Deleting %s...', 'my-wp-backup' ), $filepath ), 'debug' );
+					if ( unlink( $filepath ) ) {
+						$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+					} else {
+						$this->log( sprintf( __( 'Failed to delete %s', 'my-wp-backup' ), $filepath ), 'error' );
+					}
+				}
+			}
 		}
 	}
 
@@ -247,7 +260,6 @@ class Job implements \ArrayAccess {
 			} else {
 				trigger_error( esc_html( sprintf( __( 'Missing upload function: %s', 'my-wp-backup' ), 'upload_' . $destination ) ), E_USER_NOTICE );
 			}
-
 		}
 	}
 

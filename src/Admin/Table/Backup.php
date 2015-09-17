@@ -197,7 +197,9 @@ class Backup extends \WP_List_Table {
 			return Job::$destinations[ $dest ];
 		}, array_keys( $item['destinations'] ) );
 
-		array_unshift( $dests, 'Local Folder' );
+		if ( '1' !== $item['job']['delete_local'] ) {
+			array_unshift( $dests, __( 'Local Folder', 'my-wp-backup' ) );
+		}
 
 		return join( ', ', $dests );
 
