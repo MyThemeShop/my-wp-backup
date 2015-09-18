@@ -3,7 +3,7 @@ namespace MyWPBackup\Database\Connection;
 
 class Mysql extends Connection {
 	function connect() {
-		$this->connection = @mysql_connect( $this->host, $this->username, $this->password );
+		$this->connection = @mysql_connect( $this->raw_host, $this->username, $this->password );
 		if ( ! $this->connection ) {
 			error_log( 'Couldn\'t connect to the database: ' . mysql_error() );
 		}

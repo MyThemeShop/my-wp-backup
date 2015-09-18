@@ -46,8 +46,8 @@ abstract class Dumper {
 		$db = Connection::create( $db_options );
 		$db->connect();
 		if ( self::has_shell_access()
-		     && self::is_shell_command_available( 'mysqldump' )
-		     && self::is_shell_command_available( 'gzip' )
+		     && ! self::is_shell_command_available( 'mysqldump' )
+		     && ! self::is_shell_command_available( 'gzip' )
 		) {
 			$dumper = new Shell( $db, $job );
 			$job->log( __( 'Using mysqldump.', 'my-wp-backup' ), 'debug' );

@@ -3,24 +3,7 @@ namespace MyWPBackup\Database\Connection;
 
 class Mysqli extends Connection {
 	function connect() {
-		$port = null;
-		$socket = null;
-		$host = $this->host;
-		$port_or_socket = strstr( $host, ':' );
-		if ( ! empty( $port_or_socket ) ) {
-			$host = substr( $host, 0, strpos( $host, ':' ) );
-			$port_or_socket = substr( $port_or_socket, 1 );
-			if ( 0 !== strpos( $port_or_socket, '/' ) ) {
-				$port = intval( $port_or_socket );
-				$maybe_socket = strstr( $port_or_socket, ':' );
-				if ( ! empty( $maybe_socket ) ) {
-					$socket = substr( $maybe_socket, 1 );
-				}
-			} else {
-				$socket = $port_or_socket;
-			}
-		}
-		$this->connection = mysqli_connect( $host, $this->username, $this->password, $this->name, $port, $socket );
+		$this->connection = mysqli_connect( $this->host, $this->username, $this->password, $this->name, $this->port, $this->socket );
 		if ( $this->connection->connect_error ) {
 			error_log( "Couldn't connect to the database: " . $this->connection->connect_error );
 		}

@@ -5,11 +5,19 @@ use MyWPBackup\Database\DumpFile\DumpFile;
 
 class Shell extends Dumper {
 	function dump( $export_file_location, $table_prefix = '' ) {
-		$command = 'mysqldump -h ' . escapeshellarg( $this->db->host ) .
+		$command = 'mysqldump' .
 			' -u ' . escapeshellarg( $this->db->username ) .
 			' --password=' . escapeshellarg( $this->db->password ) .
 			' --add-drop-table ' .
 			escapeshellarg( $this->db->name );
+
+		if ( null !== $this->db->port ) {
+			$command .= ' -h ' . escapeshellarg( $this->db->host ) .
+			            ' --port=' . escapeshellarg( $this->db->port );
+		} elseif ( null !== $this->db->socket ) {
+			$command .= ' --socket=' . escapeshellarg( $this->db->socket );
+		}
+
 		$include_all_tables = empty( $table_prefix ) &&
 			empty( $this->include_tables ) &&
 			empty( $this->exclude_tables );
