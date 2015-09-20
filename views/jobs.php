@@ -273,7 +273,7 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 				            <th scope="row"><label for="drive-token"><?php esc_html_e( 'Access Token', 'my-wp-backup' ); ?></label></th>
 				            <td>
 					            <input value="<?php echo esc_attr( $job['destination_options']['googledrive']['token'] ); ?>" name="my-wp-backup-jobs[destination_options][googledrive][token]" id="drive-token" type="text"/>
-					            <a target="_blank" id="drive-token-link" href="#TB_inline?width=600&height=100&inlineId=my-wp-backup-drive-content" class="thickbox button"><?php esc_html_e( 'Generate Access Token', 'my-wp-backup' ); ?></a>
+					            <a target="_blank" id="drive-token-link" href="#TB_inline?width=600&height=140&inlineId=my-wp-backup-drive-content" class="thickbox button"><?php esc_html_e( 'Connect Google Drive Account', 'my-wp-backup' ); ?></a>
 				                <input value="<?php echo filter_var( $job['destination_options']['googledrive']['token_json'], FILTER_SANITIZE_SPECIAL_CHARS ); ?>" name="my-wp-backup-jobs[destination_options][googledrive][token_json]" id="drive-token-json" type="hidden"/>
 				            </td>
 			            </tr>
@@ -291,7 +291,7 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 			            <tbody>
 			            <tr>
 				            <th scope="row"><label for="dropbox-token"><?php esc_html_e( 'Access Token', 'my-wp-backup' ); ?></label></th>
-				            <td><input name="my-wp-backup-jobs[destination_options][dropbox][token]" value="<?php echo esc_attr( $job['destination_options']['dropbox']['token'] ); ?>" id="dropbox-token" type="text"/> <a target="_blank" id="dropbox-token-link" href="#TB_inline?width=600&height=80&inlineId=my-wp-backup-dropbox-content" class="thickbox button"><?php esc_html_e( 'Generate Access Token', 'my-wp-backup' ); ?></a></td>
+				            <td><input name="my-wp-backup-jobs[destination_options][dropbox][token]" value="<?php echo esc_attr( $job['destination_options']['dropbox']['token'] ); ?>" id="dropbox-token" type="text"/> <a target="_blank" id="dropbox-token-link" href="#TB_inline?width=600&height=140&inlineId=my-wp-backup-dropbox-content" class="thickbox button"><?php esc_html_e( 'Connect Dropbox Account', 'my-wp-backup' ); ?></a></td>
 			            </tr>
 			            <!--<tr>
 				            <th scope="row"><label for="dropbox-folder">Dropbox Root Folder</label></th>
@@ -408,7 +408,11 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 				<tbody>
 				<tr>
 					<th scope="row"><label for="dropbox-js-auth-code"><?php esc_html_e( 'Dropbox Authorization Code', 'my-wp-backup' ); ?></label></th>
-					<td><input id="dropbox-js-auth-code" class="my-wp-backup-access-token" type="text"/> <?php submit_button( 'Get Access Token', 'primary', 'submit', false ); ?></td>
+					<td>
+						<input id="dropbox-js-auth-code" class="my-wp-backup-access-token" type="text"/> <?php submit_button( 'Get Access Token', 'primary', 'submit', false ); ?>
+						<br>
+						<p class="description"><?php esc_html_e( 'You will have been directed to Dropbox on a new tab. Kindly click "Allow" and paste the authorization code here.', 'my-wp-backup' ); ?></p>
+					</td>
 				</tr>
 				</tbody>
 			</table>
@@ -421,7 +425,11 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
 				<tbody>
 				<tr>
 					<th scope="row"><label for="drive-js-auth-code"><?php esc_html_e( 'Google Drive Authorization Code', 'my-wp-backup' ); ?></label></th>
-					<td><input id="drive-js-auth-code" class="my-wp-backup-access-token" type="text"/> <?php submit_button( 'Get Access Token', 'primary', 'submit', false ); ?></td>
+					<td>
+						<input id="drive-js-auth-code" class="my-wp-backup-access-token" type="text"/> <?php submit_button( 'Get Access Token', 'primary', 'submit', false ); ?>
+						<br>
+						<p class="description"><?php esc_html_e( 'You will have been directed to Google on a new tab. Kindly click "Allow" and paste the authorization code here.', 'my-wp-backup' ); ?></p>
+					</td>
 				</tr>
 				</tbody>
 			</table>
