@@ -468,7 +468,7 @@ class Job {
 		delete_transient( 'my-wp-backup-running' );
 		set_transient( 'my-wp-backup-finished', $uniqid, 0 );
 
-		$job->log( sprintf( __( 'Finished running job in %.1f seconds.', 'my-wp-backup' ), $job->end - $job->start ) );
+		$job->log( sprintf( __( 'Finished running job in %.1f seconds.', 'my-wp-backup' ), ( null === $job->end ? time() : $job->end ) - $job->start ) );
 
 	}
 
