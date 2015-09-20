@@ -87,7 +87,7 @@ class Backup {
 
 			$backup = self::get( $id, $uniqid );
 
-			if ( ! $backup ) {
+			if ( ! isset( $backup['duration'] ) ) {
 				add_settings_error( '', '', __( 'Invalid backup id/uniqid.', 'my-wp-backup' ) );
 				set_transient( 'settings_errors', get_settings_errors() );
 				wp_safe_redirect( $this->admin->get_page_url( 'backup', array( 'settings-updated' => 1 ) ) );
@@ -168,7 +168,7 @@ class Backup {
 			$id = intval( $_GET['id'] ); //input var okay
 			$backup = $this->get( $id, $uniqid );
 
-			if ( false === $backup ) {
+			if ( ! isset( $backup['duration'] ) ) {
 				wp_die( esc_html__( 'Backup does not exist.', 'my-wp-backup' ) );
 			}
 
@@ -188,7 +188,7 @@ class Backup {
 			$uniqid = sanitize_key( $_GET['uniqid'] ); //input var okay
 			$id = intval( $_GET['id'] ); //input var okay
 			$backup = $this->get( $id, $uniqid );
-			if ( false === $backup ) {
+			if ( ! isset( $backup['duration'] ) ) {
 				wp_die( esc_html__( 'Backup does not exist.', 'my-wp-backup' ) );
 			}
 		}
@@ -250,16 +250,12 @@ class Backup {
 			return $cache;
 		}
 
-		$properties = array_reduce( $this->all(), function( $carry, $item ) use ( $id, $uniqid ) {
+		$properties = array_reduce( $this->all(), function ( $carry, $item ) use ( $id, $uniqid ) {
 			if ( $id === $item['job']['id'] && $uniqid === $item['uniqid'] ) {
 				$carry = $item;
 			}
 			return $carry;
-		}, false );
-
-		if ( false === $properties ) {
-			return false;
-		}
+		}, array( 'job' => array( 'id' => $id ), 'uniqid' => $uniqid ) );
 
 		$backup = new \MyWPBackup\Backup( $properties );
 

@@ -26,7 +26,7 @@ class Backup extends \WP_CLI_Command {
         $admin = \MyWPBackup\Admin\Backup::get_instance();
         $backup = $admin->get( $assoc['job'], $uniqid );
 
-        if ( ! $backup ) {
+        if ( ! isset( $backup['duration'] ) ) {
             echo __( 'No such backup exists.', 'my-wp-backup' ). "\n";
             return false;
         }
@@ -60,7 +60,7 @@ class Backup extends \WP_CLI_Command {
 
             $backup = \MyWPBackup\Admin\Backup::get_instance()->get( $id, $uniqid );
 
-            if ( ! $backup ) {
+            if ( ! isset( $backup['duration'] ) ) {
                 echo __( 'No such backup exists.', 'my-wp-backup' ). "\n";
                 return false;
             }
