@@ -4,7 +4,7 @@ Creator's website link: http://mythemeshop.com/plugins/my-wp-backup/
 Tags: backup, backups, restore, dropbox backup, google drive backup, ftp backup, back up, multisite backup, restoration, sftp backup, migrate, mysql backup, database backup, db backups, website backup, wordpress backup, full backup
 Requires at least: 3.0.1
 Tested up to: 4.3
-Stable tag: 1.2.0
+Stable tag: 1.3.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -89,6 +89,13 @@ Please disable all plugins and check if backup is working properly. Then you can
 9. Backup Log
 
 == Changelog ==
+
+= 1.3.0 =
+* New: Add option to delete local backup copy
+* Fix: Support custom database port and socket host
+* Fix: Wrong job duration when job fails
+* Fix: unclear instructions on connecting accounts from services
+* Minor improvements and optimizations
 
 = 1.2.0 =
 * Fix: Completely remove Phar class usage

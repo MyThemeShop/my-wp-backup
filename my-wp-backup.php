@@ -17,7 +17,7 @@ if ( ! defined( 'ABSPATH' ) ) { die; }
  * Plugin Name:       My WP Backup
  * Plugin URI:        https://mythemeshop.com/plugins/my-wp-backup/
  * Description:       My WP Backup is the best way to protect your data and website in the event of server loss, data corruption, hacking or other events, or to migrate your WordPress data quickly and easily.
- * Version:           1.2.0
+ * Version:           1.3.0
  * Author:            MyThemeShop
  * Author URI:        https://mythemeshop.com
  * License:           GPL-2.0+
