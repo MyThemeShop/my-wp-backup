@@ -80,10 +80,10 @@ class ExportFile {
 				}
 				$query .= $line;
 				if ( ';' === substr( $query, -1, 1 ) && ! empty( $query ) ) {
-					error_log( 'Executing query: '. substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
 					if ( false === $wpdb->query( $query ) ) {
-//						error_log( 'failed executing ' . substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
-//						error_log( 'last error was ' . $wpdb->last_error );
+						error_log( 'failed executing ' . substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
+						error_log( 'last error was ' . $wpdb->last_error );
+						error_log( 'last query was ' . $wpdb->last_query );
 						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ) );
 					} else {
 						$query = '';
