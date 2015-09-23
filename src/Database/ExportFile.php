@@ -67,19 +67,26 @@ class ExportFile {
 		$file = new \SplFileObject( MyWPBackup::$info['root_dir'] . self::FILENAME, 'r' );
 		$query = '';
 
-		while ( ! $file->eof() ) {
-			$line = trim( $file->fgets() );
+		$wpdb->query( 'START TRANSACTION' );
 
-			if ( '' === $line || '--' === substr( $line, 0, 2 ) ) {
-				continue;
-			}
-			$query .= $line;
-			if ( ';' === substr( $query, -1 ) ) {
-				if ( false === $wpdb->query( $query ) ) {
-					$this->job->log( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ), 'error' );
+		try {
+			while ( ! $file->eof() ) {
+				$line = trim( $file->fgets() );
+
+				if ( '' === $line || '--' === substr( $line, 0, 2 ) ) {
+					continue;
 				}
-				$query = '';
+				$query .= $line;
+				if ( ';' === substr( $query, -1 ) ) {
+					if ( false === $wpdb->query( $query ) ) {
+						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ), 'error' );
+					}
+					$query = '';
+				}
 			}
+			$wpdb->query( 'COMMIT' );
+		} catch ( \Exception $e ) {
+			$wpdb->query( 'ROLLBACK' );
 		}
 
 	}
