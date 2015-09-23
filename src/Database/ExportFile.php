@@ -79,7 +79,7 @@ class ExportFile {
 				$query .= $line;
 				if ( ';' === substr( $query, -1 ) ) {
 					if ( false === $wpdb->query( $query ) ) {
-						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ), 'error' );
+						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ) );
 					}
 					$query = '';
 				}
