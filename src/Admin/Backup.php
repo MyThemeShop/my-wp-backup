@@ -381,11 +381,12 @@ class Backup {
 
 			$job->finish();
 			$job->log( __( 'Done restoring.', 'my-wp-backup' ) );
-			$job->log( sprintf( __( 'Finished restoring backup in %.1f seconds.', 'my-wp-backup' ), ( null === $job->end ? time() : $job->end ) - $job->start ) );
 		} catch ( \Exception $e ) {
 			error_log( $e );
 			$job->log( $e->getMessage(), 'error' );
 		}
+
+		$job->log( sprintf( __( 'Finished restoring backup in %.1f seconds.', 'my-wp-backup' ), ( null === $job->end ? time() : $job->end ) - $job->start ) );
 
 		$this->maintenance( 'off' );
 
