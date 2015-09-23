@@ -67,26 +67,38 @@ class ExportFile {
 		$file = new \SplFileObject( MyWPBackup::$info['root_dir'] . self::FILENAME, 'r' );
 		$query = '';
 
-		$wpdb->query( 'START TRANSACTION' );
+		if ( false === $wpdb->query( 'START TRANSACTION' ) ) {
+			throw new \Exception( 'Unable to start database trasacction.' );
+		}
 
 		try {
 			while ( ! $file->eof() ) {
 				$line = trim( $file->fgets() );
 
-				if ( '' === $line || '--' === substr( $line, 0, 2 ) ) {
+				if ( '' === $line || '--' === substr( $line, 0, 2 ) || '/*' === substr( $line, 0, 2 ) ) {
 					continue;
 				}
 				$query .= $line;
-				if ( ';' === substr( $query, -1 ) ) {
+				if ( ';' === substr( $query, -1, 1 ) && ! empty( $query ) ) {
+					error_log( 'Executing query: '. substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
 					if ( false === $wpdb->query( $query ) ) {
+//						error_log( 'failed executing ' . substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
+//						error_log( 'last error was ' . $wpdb->last_error );
 						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ) );
+					} else {
+						$query = '';
 					}
-					$query = '';
 				}
 			}
-			$wpdb->query( 'COMMIT' );
+			if ( false === $wpdb->query( 'COMMIT' ) ) {
+				throw new \Exception( 'Unable to commit database trasaction.' );
+			}
 		} catch ( \Exception $e ) {
-			$wpdb->query( 'ROLLBACK' );
+			$msg = $e->getMessage();
+			if ( false === $wpdb->query( 'ROLLBACK' ) ) {
+				$msg = 'Unable to rollback database transaction. Additionaly: ' . $msg;
+			}
+			throw new \Exception( $msg );
 		}
 
 	}
