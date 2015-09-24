@@ -375,9 +375,12 @@ class Backup {
 
 			$job->log( __( 'Importing database file...', 'my-wp-backup' ) );
 			$sql = new ExportFile( $job );
-			$sql->import();
-			$sql->delete();
-			$job->log( __( 'Ok.', 'my-wp-backup' ) );
+			if ( $sql->import() ) {
+				$sql->delete();
+				$job->log( __( 'Ok.', 'my-wp-backup' ) );
+			} else {
+				$job->log( sprintf( __( 'The sql file is located at %s.', 'my-wp-backup' ), MyWPBackup::$info['root_dir'] . ExportFile::FILENAME ) );
+			}
 
 			$job->finish();
 			$job->log( __( 'Done restoring.', 'my-wp-backup' ) );

@@ -59,7 +59,7 @@ class ExportFile {
 
 		if ( '0' === $this->job['export_db'] ) {
 			$this->job->log( __( 'Skipping database import', 'my-wp-backup' ) );
-			return;
+			return true;
 		}
 
 		global $wpdb;
@@ -84,21 +84,23 @@ class ExportFile {
 						error_log( 'failed executing ' . substr( $query, 0, 50 ) . '...' . substr( $query, -50 ) );
 						error_log( 'last error was ' . $wpdb->last_error );
 						error_log( 'last query was ' . $wpdb->last_query );
-						throw new \Exception( sprintf( __( 'Failed to execute query: %s', 'my-wp-backup' ), $line ) );
+						throw new \Exception( sprintf( __( 'Failed to execute a mysql query. Please import the sql file manually.', 'my-wp-backup' ), $line ) );
 					} else {
 						$query = '';
 					}
 				}
 			}
 			if ( false === $wpdb->query( 'COMMIT' ) ) {
-				throw new \Exception( 'Unable to commit database trasaction.' );
+				throw new \Exception( __( 'Unable to commit database trasaction.', 'my-wp-backup' ) );
 			}
+			return true;
 		} catch ( \Exception $e ) {
 			$msg = $e->getMessage();
 			if ( false === $wpdb->query( 'ROLLBACK' ) ) {
-				$msg = 'Unable to rollback database transaction. Additionaly: ' . $msg;
+				$msg = sprintf( __( 'Unable to rollback database transaction. Additionaly: %s ', 'my-wp-backup' ), $msg );
 			}
-			throw new \Exception( $msg );
+			$this->job->log( $msg, 'error' );
+			return false;
 		}
 
 	}
