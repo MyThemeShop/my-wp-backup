@@ -111,30 +111,34 @@ class Archive {
 
 		$this->archives = array( $archive_name );
 
-		$files = $this->job->get_files();
-		/**
-		 * @var string $name filename
-		 * @var \DirectoryIterator $file
-		 */
-		foreach ( $files['iterator'] as $name => $file ) {
-			// Skip directories (they would be added automatically)
-			if ( $file->isDir() ) {
-				continue;
+		if ( '1' === $this->job['backup_files'] ) {
+			$files = $this->job->get_files();
+			/**
+			 * @var string $name filename
+			 * @var \DirectoryIterator $file
+			 */
+			foreach ( $files['iterator'] as $name => $file ) {
+				// Skip directories (they would be added automatically)
+				if ( $file->isDir() ) {
+					continue;
+				}
+
+				// Get real and relative path for current file
+				$filePath     = $file->getRealPath();
+				$relativePath = substr( $filePath, strlen( MyWPBackup::$info['root_dir'] ) );
+
+				if ( false === $relativePath ) {
+					$this->job->log( sprintf( __( 'Skipping "%s", not in root dir', 'my-wp-backup' ), $filePath ), 'error' );
+					continue;
+				}
+
+				$this->job->log( sprintf( __( 'Adding file: %s....', 'my-wp-backup' ), $relativePath ), 'debug' );
+				$archive->addFile( $filePath, $relativePath );
+				$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+				$this->job->get_hashfile()->fwrite( "ok $relativePath\n" );
 			}
-
-			// Get real and relative path for current file
-			$filePath     = $file->getRealPath();
-			$relativePath = substr( $filePath, strlen( MyWPBackup::$info['root_dir'] ) );
-
-			if ( false === $relativePath ) {
-				$this->job->log( sprintf( __( 'Skipping "%s", not in root dir', 'my-wp-backup' ), $filePath ), 'error' );
-				continue;
-			}
-
-			$this->job->log( sprintf( __( 'Adding file: %s....', 'my-wp-backup' ), $relativePath ), 'debug' );
-			$archive->addFile( $filePath, $relativePath );
-			$this->job->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
-			$this->job->get_hashfile()->fwrite( "ok $relativePath\n" );
+		} else {
+			$this->job->log( __( 'Only backing up database file.', 'my-wp-backup' ) );
 		}
 
 		$archive->addFile( $this->job->get_hashfile()->getPathname(), '.my-wp-backup' );
