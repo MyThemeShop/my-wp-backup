@@ -707,14 +707,14 @@ class Job {
 			wp_die();
 		}
 
-		$filters = array_map( 'sanitize_text_field', preg_split("/\r\n|\n|\r/", $_POST['filters'] ) ); //input var okay;
+		$filters = array_map( 'sanitize_text_field', preg_split( "/\r\n|\n|\r/", $_POST['filters'] ) ); //input var okay;
 		$excluded = array();
 
 		/**
 		 * @param \SplFileInfo $file
 		 * @return bool True if you need to recurse or if the item is acceptable
 		 */
-		$filter = function ($file) use ($filters,&$excluded) {
+		$filter = function( $file ) use ( $filters, &$excluded ) {
 			$filePath = $file->getPathname();
 			$relativePath = substr( $filePath, strlen( MyWPBackup::$info['root_dir'] ) );
 
@@ -724,7 +724,7 @@ class Job {
 
 			foreach ( $filters as $exclude ) {
 				if ( Glob::match( $filePath, Path::makeAbsolute( $exclude, MyWPBackup::$info['root_dir'] ) ) ) {
-					array_push( $excluded, $relativePath );
+					$excluded[] = $relativePath;
 					return false;
 				}
 			}
@@ -736,7 +736,9 @@ class Job {
 			new RecursiveCallbackFilterIterator( new \RecursiveDirectoryIterator( MyWPBackup::$info['root_dir'], \RecursiveDirectoryIterator::SKIP_DOTS ), $filter )
 		);
 
-		iterator_to_array( $files );
+		// Trigger callback.
+		foreach ( $files as $file ) {
+		}
 
 		wp_send_json( $excluded );
 	}
