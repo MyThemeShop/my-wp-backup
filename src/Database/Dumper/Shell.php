@@ -6,13 +6,13 @@ use MyWPBackup\Database\DumpFile\DumpFile;
 class Shell extends Dumper {
 	function dump( $export_file_location, $table_prefix = '' ) {
 		$command = 'mysqldump' .
-			' -u ' . escapeshellarg( $this->db->username ) .
+			' -user=' . escapeshellarg( $this->db->username ) .
 			' --password=' . escapeshellarg( $this->db->password ) .
-			' --add-drop-table ' .
-			escapeshellarg( $this->db->name );
+			' --add-drop-table=' . escapeshellarg( $this->db->name ) .
+			' --result-file= ' . $export_file_location;
 
 		if ( null !== $this->db->port ) {
-			$command .= ' -h ' . escapeshellarg( $this->db->host ) .
+			$command .= ' --host=' . escapeshellarg( $this->db->host ) .
 			            ' --port=' . escapeshellarg( $this->db->port );
 		} elseif ( null !== $this->db->socket ) {
 			$command .= ' --socket=' . escapeshellarg( $this->db->socket );
@@ -27,10 +27,6 @@ class Shell extends Dumper {
 		}
 		$error_file = tempnam( sys_get_temp_dir(), 'err' );
 		$command .= ' 2> ' . escapeshellarg( $error_file );
-		if ( DumpFile::is_gzip( $export_file_location ) ) {
-			$command .= ' | gzip';
-		}
-		$command .= ' > ' . escapeshellarg( $export_file_location );
 		exec( $command, $output, $return_val );
 		if ( 0 !== $return_val ) {
 			$error_text = file_get_contents( $error_file );

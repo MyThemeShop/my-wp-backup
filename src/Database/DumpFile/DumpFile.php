@@ -23,10 +23,6 @@ abstract class DumpFile {
 	 * @return Gzip|PlainText
 	 */
 	static function create( $filename ) {
-		if ( self::is_gzip( $filename ) ) {
-			return new Gzip( $filename );
-		}
-
 		return new PlainText( $filename );
 	}
 
@@ -36,9 +32,5 @@ abstract class DumpFile {
 		if ( ! $this->fh ) {
 			error_log( 'Couldn\'t create gz file' );
 		}
-	}
-
-	public static function is_gzip( $filename ) {
-		return preg_match( '~gz$~i', $filename );
 	}
 }
