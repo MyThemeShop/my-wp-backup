@@ -897,13 +897,15 @@ class Job implements \ArrayAccess {
 
 	public function __destruct() {
 		if ( null === $this->backup && null !== $this->start && null === $this->end ) {
-			$this->log( __( 'Deleting created archives', 'my-wp-backup' ), 'debug' );
-			foreach ( $this->archive->get_archives() as $filepath ) {
-				$this->log( sprintf( __( 'Deleting archive %s...', 'my-wp-backup' ), $filepath ), 'debug' );
-				unlink( $filepath );
-				$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+			if ( null !== $this->archive && is_array( $this->archive->get_archives() ) ) {
+				$this->log( __( 'Deleting created archives', 'my-wp-backup' ), 'debug' );
+				foreach ( $this->archive->get_archives() as $filepath ) {
+					$this->log( sprintf( __( 'Deleting archive %s...', 'my-wp-backup' ), $filepath ), 'debug' );
+					unlink( $filepath );
+					$this->log( __( 'Ok.', 'my-wp-backup' ), 'debug' );
+				}
+				$this->log( __( 'Done delete archives', 'my-wp-backup' ), 'debug' );
 			}
-			$this->log( __( 'Done delete archives', 'my-wp-backup' ), 'debug' );
 		}
 	}
 
