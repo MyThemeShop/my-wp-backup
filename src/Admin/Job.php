@@ -429,6 +429,9 @@ class Job {
 			set_time_limit( $options['time_limit'] );
 			$job->running( $uniqid );
 
+			ini_set( 'log_errors', 1 );
+			ini_set( 'error_log', $job->get_basedir() . '/debug.log' );
+
 			$files = array();
 
 			$job->log( __( 'Performing full backup', 'my-wp-backup' ) );
