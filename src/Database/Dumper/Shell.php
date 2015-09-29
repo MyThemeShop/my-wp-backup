@@ -6,10 +6,10 @@ use MyWPBackup\Database\DumpFile\DumpFile;
 class Shell extends Dumper {
 	function dump( $export_file_location, $table_prefix = '' ) {
 		$command = 'mysqldump' .
-			' -user=' . escapeshellarg( $this->db->username ) .
+			' --user=' . escapeshellarg( $this->db->username ) .
 			' --password=' . escapeshellarg( $this->db->password ) .
 			' --add-drop-table'  .
-			' --result-file= ' . $export_file_location .
+			' --result-file=' . escapeshellarg( $export_file_location ) .
 			' ' . escapeshellarg( $this->db->name );
 
 		if ( null !== $this->db->port ) {
@@ -32,7 +32,7 @@ class Shell extends Dumper {
 		if ( 0 !== $return_val ) {
 			$error_text = file_get_contents( $error_file );
 			@unlink( $error_file );
-			$this->job->log( sprintf( __( 'Couldn\'t export database: %s', 'my-wp-backup' ), $error_text ), 'error' );
+			throw new \Exception( sprintf( __( 'Couldn\'t export database: %s', 'my-wp-backup' ), $error_text ) );
 		}
 		@unlink( $error_file );
 	}
