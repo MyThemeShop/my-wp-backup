@@ -8,8 +8,9 @@ class Shell extends Dumper {
 		$command = 'mysqldump' .
 			' -user=' . escapeshellarg( $this->db->username ) .
 			' --password=' . escapeshellarg( $this->db->password ) .
-			' --add-drop-table=' . escapeshellarg( $this->db->name ) .
-			' --result-file= ' . $export_file_location;
+			' --add-drop-table'  .
+			' --result-file= ' . $export_file_location .
+			' ' . escapeshellarg( $this->db->name );
 
 		if ( null !== $this->db->port ) {
 			$command .= ' --host=' . escapeshellarg( $this->db->host ) .
